@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enum\RoleEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -56,5 +57,9 @@ class User extends Authenticatable
     public function role():HasOne
     {
         return $this->hasOne(Role::class, 'id', 'role_id');
+    }
+    public function reports():HasMany
+    {
+        return $this->hasMany(Report::class);
     }
 }
