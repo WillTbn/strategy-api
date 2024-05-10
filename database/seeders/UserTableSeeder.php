@@ -16,7 +16,7 @@ class UserTableSeeder extends Seeder
     public function run(): void
     {
         User::factory()
-            ->has(Account::factory())
+            ->has(Account::factory(1,['person' =>env('ADMIN_PERSON', '111.222.333-44')]))
         ->create([
             'name'=>'Administrador User',
             'email'=> env('ADMIN_EMAIL', fake()->email()),
@@ -24,7 +24,7 @@ class UserTableSeeder extends Seeder
             'role_id' => RoleEnum::Master
         ]);
         User::factory()
-            ->has(Account::factory())
+            ->has(Account::factory(1,['person' =>env('CLIENT_PERSON', fake()->cpf())]))
         ->create([
             'name'=>'Client User',
             'email'=> env('CLIENT_EMAIL', fake()->email()),
@@ -33,7 +33,7 @@ class UserTableSeeder extends Seeder
         ]);
 
         User::factory()
-            ->has(Account::factory())
+            ->has(Account::factory(1,['person' =>env('EMPLO_PERSON', fake()->cpf())]))
         ->create([
             'name'=>'Employee User',
             'email'=> env('EMPLO_EMAIL', fake()->email()),

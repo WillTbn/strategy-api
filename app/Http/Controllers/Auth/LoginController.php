@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
+use App\Models\Account;
+use App\Services\UserServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -11,19 +14,18 @@ use function Laravel\Prompts\password;
 
 class LoginController extends Controller
 {
-    public function login(Request $request)
+    private $userServices;
+    public function __construct(
+        UserServices $userServices,
+    )
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        $this->userServices = $userServices;
+    }
+    public function login(LoginRequest $request)
+    {
+        $request['email'] = $this->userServices->getEmailByPerson($request->person);
 
-        if($validator->fails()){
-
-            return response()->json(['error' => $validator->errors()->all()]);
-        }
-
-        if( Auth::attempt($request->only('email', 'password'))){
+        if(Auth::attempt($request->only('email', 'password'))){
 
             // config(['auth.guards.api.provider' => 'user']);
 
