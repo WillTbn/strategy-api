@@ -18,4 +18,15 @@ class LoginRequest extends FormRequest
             'password' => 'required',
         ];
     }
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'person.exists' => 'CPF ou CNPJ não encontrato.',
+        ];
+    }
 }

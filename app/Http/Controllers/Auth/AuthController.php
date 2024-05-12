@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Enum\RoleEnum;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -14,18 +16,14 @@ class AuthController extends Controller
         $user = Auth::user('api');
         //return $user->verifield_email;exit;
         if($user){
-            $user->account;
-            if($user->role_id == RoleEnum::Client){
-
-            }
-
+            $get = User::where('id', $user->id)->clientOrAdmin($user->role_id)->first();
             return response()->json([
                 'status'=> '200',
-                'data' => $user,
+                'data' => $get,
 
             ], 200);
         }
-        return response()->json(['status' => 200,  'user'=> $user],200);
+        return response()->json(['message' => 'error na authetificação '],500);
     }
     public function logout(Request $request)
     {
@@ -33,7 +31,5 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json(['message' => 'Logged out successfully'], 200);
-
-        return response()->json(['message' =>  'unauthorized'], 401);
     }
 }

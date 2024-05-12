@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Enum\RoleEnum;
 use App\Models\Account;
 use App\Models\User;
+use App\Models\UserBankAccount;
+use App\Models\UserWallet;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -25,6 +27,8 @@ class UserTableSeeder extends Seeder
         ]);
         User::factory()
             ->has(Account::factory(1,['person' =>env('CLIENT_PERSON', fake()->cpf())]))
+            ->has(UserBankAccount::factory())
+            ->has(UserWallet::factory())
         ->create([
             'name'=>'Client User',
             'email'=> env('CLIENT_EMAIL', fake()->email()),
@@ -34,6 +38,8 @@ class UserTableSeeder extends Seeder
 
         User::factory()
             ->has(Account::factory(1,['person' =>env('EMPLO_PERSON', fake()->cpf())]))
+            ->has(UserBankAccount::factory())
+            ->has(UserWallet::factory())
         ->create([
             'name'=>'Employee User',
             'email'=> env('EMPLO_EMAIL', fake()->email()),

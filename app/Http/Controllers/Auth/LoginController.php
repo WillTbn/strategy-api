@@ -27,15 +27,8 @@ class LoginController extends Controller
 
         if(Auth::attempt($request->only('email', 'password'))){
 
-            // config(['auth.guards.api.provider' => 'user']);
-
-            // dd(
-            //     $request->user()->role->abilities
-            // );
             $abilities = $request->user()->role->abilities->pluck('name');
-            // return response()->json(['token' => $abilities], 200);
             $token = $request->user()->createToken('strategy-api',[$abilities]);
-
 
             return response()->json([
                 'token' => $token->plainTextToken,
@@ -44,7 +37,7 @@ class LoginController extends Controller
 
         }else{
 
-            return response()->json(['error' => ['Email and Password are Wrong.']], 200);
+            return response()->json(['message' => 'Cpf ou senha invalidos.'], 422);
         }
     }
 }

@@ -20,6 +20,11 @@ class Account extends Model
         'user_id',
         'condominia_id'
     ];
+    public function getAvatarAttribute($value)
+    {
+        return asset('storage/'.$value);
+        // return $value != 'default-illustrative.png' ? asset('storage/products/'.$value) : asset($value);
+    }
     public function user():HasOne
     {
         return $this->hasOne(User::class, 'id', 'user_id');
