@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Report;
 
+use App\Enum\TypeReport;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ReportRequest extends FormRequest
 {
@@ -14,11 +16,11 @@ class ReportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'document' => 'required|file|mimes:pdf|max:2048',
+            'document' => 'required|file|mimes:pdf|max:59240',
             'title' => 'string|required',
             'description'=>'string',
+            'type'=>['required', Rule::enum(TypeReport::class)],
             'audio' =>[
-                'required',
                 'file',
                 'mimes:audio/aac,audio/aiff,audio/amr,audio/flac,audio/m4a,audio/ogg,audio/opus,audio/wav,audio/wma',
                 'max:59240', // 59MB em kilobytes

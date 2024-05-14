@@ -16,7 +16,14 @@ Route::middleware('auth:sanctum')->group(function(){
     });
 
     Route::controller(ReportController::class)->prefix('/reports')->as('reports.')->group(function(){
-        Route::get('/', 'index')->name('index');
+        Route::get('/', 'store')->name('store');
+        Route::post('/create', 'create')->name('create');
+        Route::put('/', 'update')->name('update');
+        Route::post('/document', 'updateDoc')->name('uploadDocument');
+        Route::post('/audio', 'updateAudio')->name('uploadAudio');
+        Route::post('/audio/delete', 'deleteAudio')->name('deleteAudio');
+        Route::delete('/{report}', 'delete')->name('delete');
+        Route::get('/{report}', 'index')->name('index');
     });
 
 });
