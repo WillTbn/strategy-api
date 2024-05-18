@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -57,6 +58,12 @@ class User extends Authenticatable
             return $query->with(['account', 'userWallet', 'userBankAccounts']);
         return $query->with(['account']);
     }
+    public function scopeVerifyUser($query, RoleEnum $role)
+    {
+        if($role == RoleEnum::Master)
+            return $query->whereNot('id', Auth::user('api')->id)->whereNot('role_id', RoleEnum::Client);
+        return $query->whereNot('id', Auth::user('api')->id)->whereNot('role_id', RoleEnum::Master);
+    }
     public function account(): HasOne
     {
         return $this->hasOne(Account::class);
@@ -76,6 +83,10 @@ class User extends Authenticatable
     public function userBankAccounts():HasMany
     {
         return $this->hasMany(UserBankAccount::class);
+    }
+    public function accessToken():HasOne
+    {
+        return $this->hasOne(AccessToken::class);
     }
     public function isClient():bool
     {

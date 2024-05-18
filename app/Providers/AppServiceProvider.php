@@ -2,8 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\AccessToken;
 use App\Models\Report;
+use App\Models\User;
+use App\Observers\AccessTokenObserver;
 use App\Observers\ReportObserver;
+use App\Observers\UserObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,5 +26,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Report::observe(ReportObserver::class);
+        User::observe(UserObserver::class);
+        AccessToken::observe(AccessTokenObserver::class);
     }
 }

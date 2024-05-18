@@ -1,11 +1,10 @@
 <?php
 
-use App\Actions\Fortify\CreateNewUser;
+use App\Http\Controllers\Auth\AccessTokenController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::post('login', [LoginController::class, 'login'])->name('login');
@@ -25,6 +24,16 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::delete('/{report}', 'delete')->name('delete');
         Route::get('/{report}', 'index')->name('index');
     });
+    Route::controller(UserController::class)->prefix('/users')->as('users')->group(function(){
+        Route::get('/', 'store')->name('all');
+        Route::post('/', 'create')->name('create');
+        Route::put('/', 'update')->name('update');
+    });
+
+    Route::controller(AccessTokenController::class)->prefix('/tokens')->as('tokens')->group(function(){
+        Route::put('/{accessToken}', 'resend')->name('resend');
+    });
+
 
 });
 

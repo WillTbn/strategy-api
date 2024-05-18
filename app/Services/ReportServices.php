@@ -13,13 +13,11 @@ use Illuminate\Support\Facades\Log;
 class ReportServices
 {
     use FileHelper;
-    public function report_create(
-        $document,
+    public function create(
         int $user_id,
         String $title,
         String $type,
         String $description =null,
-        $audio =null
         )
     {
         // $doc = ;
@@ -28,10 +26,8 @@ class ReportServices
             // dd($doc);
             $report = Report::create([
                 'user_id' =>  $user_id,
-                'document'=> $this->setDocOrAudio($document,$type, 'document', 'reports' ),
                 'title' => $title,
                 'description' => $description,
-                'audio' => $audio,
                 'type' => $type
             ]);
             return $report;
@@ -44,7 +40,38 @@ class ReportServices
             ], 500);
         }
     }
-    public function report_update(
+    public function createAllData(
+        int $user_id,
+        String $title,
+        String $type,
+        $document,
+        $audio =null,
+        String $description =null,
+        )
+    {
+        // $doc = ;
+        // dd($user_id);
+        try{
+            // dd($doc);
+            $report = Report::create([
+                'user_id' =>  $user_id,
+                'title' => $title,
+                'description' => $description,
+                'document' => $this->setDocOrAudio($document,$type,'document', 'reports' ),
+                'audio' => $audio != null ?? $this->setDocOrAudio($audio,$type,'audio', 'reports' ),
+                'type' => $type
+            ]);
+            return $report;
+        }catch(Exception $e){
+            Log::error('exception ->'.$e);
+            return response()->json([
+                'message' => 'Erro ao cria relatorio!',
+                'exception' => $e,
+                'status'=> 500
+            ], 500);
+        }
+    }
+    public function update(
         int $report_id,
         int $user_id,
         String $title,
@@ -68,7 +95,7 @@ class ReportServices
             ], 500);
         }
     }
-    public function report_update_document(
+    public function updateDocument(
         int $report_id,
         $document,
     ){
@@ -86,7 +113,7 @@ class ReportServices
             ], 500);
         }
     }
-    public function report_update_audio(
+    public function updateAudio(
         int $report_id,
         $audio,
     ){
@@ -104,7 +131,7 @@ class ReportServices
             ], 500);
         }
     }
-    public function report_audio_delete(
+    public function audioDelete(
         int $report_id,
     ){
         try{

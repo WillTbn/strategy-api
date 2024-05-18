@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('document');
+            $table->string('document')->nullable();
             $table->string('description')->nullable();
             $table->string('audio')->nullable();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');

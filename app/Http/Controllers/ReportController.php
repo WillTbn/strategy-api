@@ -51,11 +51,12 @@ class ReportController extends Controller
     public function create(ReportRequest $request)
     {
         // dd($request->document);
-        $report = $this->reportServices->report_create(
-            $request->document,
+        $report = $this->reportServices->createAllData(
             $this->loggedUser->id,
             $request->title,
             $request->type,
+            $request->document,
+            $request->audio,
             $request->description, $request->audio
         );
         if($report){
@@ -71,7 +72,7 @@ class ReportController extends Controller
     }
     public function update(ReportputRequest $request)
     {
-        $resp = $this->reportServices->report_update(
+        $resp = $this->reportServices->update(
             $request->report_id,
             $this->loggedUser->id,
             $request->title,
@@ -119,7 +120,7 @@ class ReportController extends Controller
             ], 402);
         }
 
-        $response = $this->reportServices->report_update_document($get->id, $request->document);
+        $response = $this->reportServices->updateDocument($get->id, $request->document);
         // return response()->json(['message'=>  $response->document, 'tem' => $this->getNameFile($response->document) ], 200);
 
         if(!$response){
@@ -150,7 +151,7 @@ class ReportController extends Controller
             ], 402);
         }
 
-        $response = $this->reportServices->report_update_audio($get->id, $request->audio);
+        $response = $this->reportServices->updateAudio($get->id, $request->audio);
         // return response()->json(['message'=>  $response->document, 'tem' => $this->getNameFile($response->document) ], 200);
 
         if(!$response){
@@ -180,7 +181,7 @@ class ReportController extends Controller
             ], 402);
         }
 
-        $response = $this->reportServices->report_audio_delete($get->id);
+        $response = $this->reportServices->audioDelete($get->id);
         // return response()->json(['message'=>  $response->document, 'tem' => $this->getNameFile($response->document) ], 200);
 
         if(!$response){

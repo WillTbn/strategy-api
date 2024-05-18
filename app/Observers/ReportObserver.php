@@ -22,11 +22,11 @@ class ReportObserver
      */
     public function updated(Report $report): void
     {
-        if($report->isDirty('document')){
+        if($report->isDirty('document') && $report->getOriginal('document')){
             $file = $this->getNameFile($report->getOriginal('document'));
             Storage::disk('public')->delete($file);
         }
-        if($report->isDirty('audio')){
+        if($report->isDirty('audio') && $report->getOriginal('audio')){
             $file = $this->getNameFile($report->getOriginal('audio'));
             Storage::disk('public')->delete($file);
 

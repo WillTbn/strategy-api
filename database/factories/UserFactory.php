@@ -47,7 +47,7 @@ class UserFactory extends Factory
         return $this->state(function (array $attributes) {
 
             $roleResposible = Role::factory()
-                ->has(Ability::factory(1, ['name' => 'condominia-all']))
+                ->has(Ability::factory(1, ['name' => 'report-all']))
             ->create(['name'=> RoleEnum::Employee->name]);
             return [
                 'role_id'=> $roleResposible->id

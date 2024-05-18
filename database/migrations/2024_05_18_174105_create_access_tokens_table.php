@@ -1,6 +1,5 @@
 <?php
 
-use App\Enum\TypeReport;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('reports', function (Blueprint $table) {
-            $table->enum('type',TypeReport::forSelectName())->default(TypeReport::CLASSIC);
+        Schema::create('access_tokens', function (Blueprint $table) {
+            $table->id();
+            $table->string('token');
+            $table->foreignId('user_id')->constrained();
+            $table->date('expires_at')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -22,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('reports', function (Blueprint $table) {
-            $table->dropColumn('type');
-        });
+        Schema::dropIfExists('access_tokens');
     }
 };
