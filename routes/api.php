@@ -36,7 +36,8 @@ Route::middleware('auth:sanctum')->group(function(){
 
 
 });
-
+Route::post('/tokens/validate', [AccessTokenController::class, 'validate'])->name('tokens.validate');
+Route::post('/tokens', [AccessTokenController::class, 'checking'])->name('tokens.checking');
 Route::get('/user', [UserController::class, 'index'])->middleware('auth:sanctum');
 // Route::post('/login', [Fortify::AuthenticateUser::class, 'handle']);
 // Route::post('/logout', [Fortify::LogoutUser::class, 'handle']);

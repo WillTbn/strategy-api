@@ -31,7 +31,7 @@ return new class extends Migration
             $table->string('address_zip_code')->nullable();
             $table->string('address_city')->nullable();
             $table->string('address_country')->nullable();
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });

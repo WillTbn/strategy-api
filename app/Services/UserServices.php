@@ -23,7 +23,7 @@ class UserServices
     }
     public function getAll($role_id):Collection
     {
-        return User::verifyUser($role_id)->get();
+        return User::verifyUser($role_id)->with(['accessToken'])->get();
     }
     public function createAdmin(UseradmDTO $data)
     {
@@ -39,28 +39,24 @@ class UserServices
             $user->password = Hash::make($data->password);
             $user->role_id = $data->role_id;
             $user->saveOrFail();
-            // $user = User::create([
-            //     'name '=> $data->name,
-            //     'email '=> $data->email,
-            //     'password '=> Hash::make($data->password),
-            //     'role_id '=> $data->role_id,
-            // ]);
-            Account::create([
-                'person' => $data->person,
-                'birthday' => $data->getBirthday()->format('Y-m-d'),
-                'notifications'=> $data->notifications,
-                'type_of_investor' =>$data->type_of_investor,
-                'telephone' => $data->telephone,
-                'phone' => $data->phone,
-                'genre' => $data->genre,
-                'address_street' => $data->address_street,
-                'address_state' => $data->address_state,
-                'address_number' => $data->address_number,
-                'address_district' => $data->address_district,
-                'address_zip_code' => $data->address_zip_code,
-                'address_city' => $data->address_city,
-                'address_country' => $data->address_country,
-            ]);
+
+            $account = new Account();
+            $account->person = $data->person;
+            $account->birthday = $data->getBirthday()->format('Y-m-d');
+            $account->notifications = $data->notifications;
+            $account->type_of_investor = $data->type_of_investor;
+            $account->telephone = $data->telephone;
+            $account->phone = $data->phone;
+            $account->genre = $data->genre;
+            $account->address_street = $data->address_street;
+            $account->address_state = $data->address_state;
+            $account->address_number = $data->address_number;
+            $account->address_district = $data->address_district;
+            $account->address_zip_code = $data->address_zip_code;
+            $account->address_city = $data->address_city;
+            $account->address_country = $data->address_country;
+            $account->user_id = $user->id;
+            $account->saveOrFail();
             AccessToken::create([
                 'token' => $hashedToken,
                 'user_id' => $user->id,

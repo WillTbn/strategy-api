@@ -27,13 +27,13 @@ class UseradmDTO extends AbstractDTO implements InterfaceDTO
         public readonly ?string  $telephone =null,
         public readonly ?string  $phone =null,
         public readonly ?string  $genre =null,
-        public readonly ?string  $address_street =null,
-        public readonly ?string  $address_state =null,
-        public readonly ?string  $address_number =null,
-        public readonly ?string  $address_district =null,
-        public readonly ?string  $address_zip_code =null,
-        public readonly ?string  $address_city =null,
-        public readonly ?string  $address_country =null,
+        public readonly ?string  $address_street ="",
+        public readonly ?string  $address_state ="",
+        public readonly ?string  $address_number ="",
+        public readonly ?string  $address_district ="",
+        public readonly ?string  $address_zip_code ="",
+        public readonly ?string  $address_city ="",
+        public readonly ?string  $address_country ="",
     )
     {
         $random_passwrod = Str::random(8);
@@ -44,6 +44,10 @@ class UseradmDTO extends AbstractDTO implements InterfaceDTO
     public function getBirthday() :Carbon
     {
         return Carbon::parse($this->birthday);
+    }
+    public function getAddreesStreet():string
+    {
+        return "vendo oque acontece";
     }
     public function rules(): array
     {
