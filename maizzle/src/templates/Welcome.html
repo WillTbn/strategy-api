@@ -1,0 +1,67 @@
+---
+title: "Confirm your email address"
+preheader: "Please confirm your email address in order to activate your account."
+bodyClass: bg-slate-50
+---
+
+<x-main>
+  <div class="bg-slate-50 sm:px-4 font-sans">
+    <table align="center">
+      <tr>
+        <td class="w-[552px] max-w-full">
+          <div class="my-12 sm:my-8 text-center">
+            <a href="https://strategyanalytics.com.br">
+              <img src="images/slogan.png" width="70" alt="Strategy Analytics">
+            </a>
+          </div>
+
+          <table class="w-full">
+            <tr>
+              <td class="p-12 sm:px-6 text-base text-slate-700 bg-white rounded shadow-sm">
+                <h1 class="m-0 mb-6 text-2xl sm:leading-8 text-black font-semibold">
+                  Olá, @{{$name}}
+                </h1>
+
+                <p class="m-0 leading-6">
+                  É voce que estamos procurando?
+                  <br>
+                  Você foi registrado em nossa platorma, para controle do sistema Strategy Analitycs.
+                  <br>
+                  Mas antes de começa, precisa se autentificar, para isso o link a seguir,
+                  confirma seu e-mail:
+                  <br>
+                </p>
+
+                <x-spacer height="24px" />
+
+                <x-button href="@{{$token}}">
+                  Confirma e-mail &rarr;
+                </x-button>
+
+                <x-divider space-y="32px" class="bg-slate-200" />
+
+                <p class="m-0">
+                  Se você não se registrou na Strategy Analytics ou não pediu a nossa equipe o cadastro,
+                  pode ignora esse email com segurança.
+                  <br>
+                  <br>
+                  Muito Obrigado, <br />equiepe Strategy Analytics.
+                </p>
+              </td>
+            </tr>
+            <tr role="separator">
+              <td class="leading-12">&zwj;</td>
+            </tr>
+            <tr>
+              <td class="text-center text-slate-600 text-xs px-6">
+                <p class="m-0 mb-4 uppercase">
+                  Distruibuido por Strategy Analytics
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+</x-main>

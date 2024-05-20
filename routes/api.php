@@ -24,13 +24,13 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::delete('/{report}', 'delete')->name('delete');
         Route::get('/{report}', 'index')->name('index');
     });
-    Route::controller(UserController::class)->prefix('/users')->as('users')->group(function(){
+    Route::controller(UserController::class)->prefix('/users')->as('users.')->group(function(){
         Route::get('/', 'store')->name('all');
-        Route::post('/', 'create')->name('create');
-        Route::put('/', 'update')->name('update');
+        Route::post('/create', 'create')->name('create');
+
     });
 
-    Route::controller(AccessTokenController::class)->prefix('/tokens')->as('tokens')->group(function(){
+    Route::controller(AccessTokenController::class)->prefix('/tokens')->as('tokens.')->group(function(){
         Route::put('/{accessToken}', 'resend')->name('resend');
     });
 
