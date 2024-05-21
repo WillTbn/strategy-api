@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Auth\AccessTokenController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\UserBankAccountController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +31,14 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::post('/create', 'create')->name('create');
 
     });
+
+    Route::controller(AccountController::class)->prefix('/account')->as('account.')->group(function (){
+        Route::post('/avatar', 'avatarUpdate')->name('avatarUpdate');
+    });
+    Route::controller(UserBankAccountController::class)->prefix('/bank')->as('bank.')->group(function (){
+        Route::post('/', 'create')->name('create');
+    });
+
 
     Route::controller(AccessTokenController::class)->prefix('/tokens')->as('tokens.')->group(function(){
         Route::put('/{accessToken}', 'resend')->name('resend');

@@ -22,7 +22,7 @@ class Account extends Model
     ];
     public function getAvatarAttribute($value)
     {
-        return asset('storage/'.$value);
+        return $value != "" ? asset('storage/users/'.$value): $value;
         // return $value != 'default-illustrative.png' ? asset('storage/products/'.$value) : asset($value);
     }
     public function user():HasOne

@@ -6,6 +6,7 @@ use App\Enum\TypeReport;
 use App\Helpers\FileHelper;
 use App\Models\Account;
 use App\Models\Report;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -46,17 +47,20 @@ class ReportServices
         String $type,
         $document,
         $audio =null,
+        String $display_date_at = null,
         String $description =null,
         )
     {
-        // $doc = ;
-        // dd($user_id);
+
+        $format_data = Carbon::parse($display_date_at);
+
         try{
-            // dd($doc);
+
             $report = Report::create([
                 'user_id' =>  $user_id,
                 'title' => $title,
                 'description' => $description,
+                'display_date_at' => $format_data ?? $format_data->format('Y-m-d'),
                 'document' => $this->setDocOrAudio($document,$type,'document', 'reports' ),
                 'audio' => $audio != null ?? $this->setDocOrAudio($audio,$type,'audio', 'reports' ),
                 'type' => $type
@@ -66,6 +70,7 @@ class ReportServices
             Log::error('exception ->'.$e);
             return response()->json([
                 'message' => 'Erro ao cria relatorio!',
+                'display_date_at' => $format_data,
                 'exception' => $e,
                 'status'=> 500
             ], 500);

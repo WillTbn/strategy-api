@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enum\RoleEnum;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -17,7 +18,8 @@ class Report extends Model
         'description',
         'audio',
         'type',
-        'user_id'
+        'user_id',
+        'display_date_at'
     ];
     public function user():HasOne
     {
@@ -29,7 +31,23 @@ class Report extends Model
     }
     public function getAudioAttribute($value)
     {
-        return $value != "" ? asset('storage/reports/'.$value): $value;
+        if($value)
+            return asset('storage/reports/'.$value);
+        return null;
+    }
+    public function getDisplayDateAtAttribute($value)
+    {
+        if($value){
+            $format_date =  Carbon::parse($value);
+            return  $format_date->format('d/m/Y');
+        }
+        return $value;
+    }
+    public function scopeClientOrAdmin($query, RoleEnum $role)
+    {
+        if($role == RoleEnum::Client)
+            return $query->where('display_date_at','!=', null)->where('display_date_at', '<', now());
+        return $query;
     }
     public function scopeDeleteOnly($query, RoleEnum $role)
     {

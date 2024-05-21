@@ -40,7 +40,7 @@ class ReportController extends Controller
     }
     public function store()
     {
-        $report = Report::all();
+        $report = Report::clientOrAdmin($this->loggedUser->role_id)->get();
 
         return response()->json([
             'reports' => $report,
@@ -57,18 +57,21 @@ class ReportController extends Controller
             $request->type,
             $request->document,
             $request->audio,
+            $request->display_date_at,
             $request->description, $request->audio
         );
-        if($report){
+        if($report->exception){
             return response()->json([
-                'reports' => $report,
-                'status'=> 200
-            ], 200);
+                'message' => 'error na criação do relatorio, 402.',
+                'status'=> 402
+            ], 402);
         }
-        return response()->json([
-            'message' => 'error na criação do relatorio, 402.',
-            'status'=> 402
-        ], 402);
+        // return response()->json([
+        //     'reports' => $report,
+        //     'status'=> 200
+        // ], 200);
+        return $report;
+
     }
     public function update(ReportputRequest $request)
     {

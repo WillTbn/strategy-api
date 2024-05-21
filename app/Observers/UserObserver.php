@@ -4,11 +4,14 @@ namespace App\Observers;
 
 use App\Enum\RoleEnum;
 use App\Events\CreateUserAdm;
+use App\Helpers\FileHelper;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class UserObserver
 {
+    use FileHelper;
     /**
      * Handle the User "created" event.
      */
@@ -23,7 +26,10 @@ class UserObserver
      */
     public function updated(User $user): void
     {
-
+        if($user->isDirty('avatar') && $user->getOriginal('avatar')){
+            $file = $this->getNameFile($user->getOriginal('avatar'));
+            Storage::disk('public')->delete($file);
+        }
     }
 
     /**

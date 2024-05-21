@@ -10,7 +10,6 @@ trait FileHelper
 
     public function setAvatarStore(File $file, int $id, string $folder): string
     {
-        $options = ['visibility' => 'public'];
         $filename = date('Y_m_d_H_m_s');
         $extension = $file->getClientOriginalExtension();
         $nameLast = $id.'/'.$filename.'.'.$extension;
