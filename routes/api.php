@@ -34,9 +34,12 @@ Route::middleware('auth:sanctum')->group(function(){
 
     Route::controller(AccountController::class)->prefix('/account')->as('account.')->group(function (){
         Route::post('/avatar', 'avatarUpdate')->name('avatarUpdate');
+        Route::post('/data', 'updateData')->name('updateData');
     });
     Route::controller(UserBankAccountController::class)->prefix('/bank')->as('bank.')->group(function (){
         Route::post('/', 'create')->name('create');
+        Route::put('/', 'update')->name('update');
+        Route::delete('/{bank}', 'delete')->name('delete');
     });
 
 

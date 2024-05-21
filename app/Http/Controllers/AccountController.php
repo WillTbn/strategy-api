@@ -34,4 +34,22 @@ class AccountController extends Controller
         }
         return $response;
     }
+    public function updateData(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'phone' => 'required|string',
+            // 'phone' => 'required|string'
+        ]);
+        $validator->validated();
+        $response = $this->accountServices->updateNameByTelephone($request->name, $request->phone, $this->loggedUser->id);
+        if($response->exception){
+            return response()->json([
+                'message' => 'Error no upload do avatar.',
+                'exception' => $response->exception,
+                'status'=> 402
+            ], 402);
+        }
+        return $response;
+    }
 }

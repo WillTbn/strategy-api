@@ -17,7 +17,7 @@ class UserBankAccountRequest extends FormRequest
         return [
             'bank' => 'required',
             'agency' => 'required',
-            'number' => 'required',
+            'number' => 'required|unique:user_bank_accounts',
         ];
     }
 }
