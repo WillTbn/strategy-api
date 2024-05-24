@@ -41,7 +41,7 @@ class SetEmailRegistreEmployee extends Mailable
             with:[
                 'name' =>  $this->user->name,
                 'email' =>  $this->user->email,
-                'token' => env('APP_URL_FRONT').'/auth/?token='.$this->token
+                'token' => env('APP_URL_FRONT', 'http://localhost:9010/').'login?token='.$this->token
             ]
         );
     }

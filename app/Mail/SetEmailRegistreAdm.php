@@ -41,7 +41,7 @@ class SetEmailRegistreAdm extends Mailable
             with:[
                 'name' =>  $this->user->name,
                 'email' =>  $this->user->email,
-                'token' => $this->token
+                'token' => env('APP_URL_FRONT', 'http://localhost:9010/').'login?token='.$this->token
             ]
         );
     }

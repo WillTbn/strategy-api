@@ -30,7 +30,9 @@ class TokenDTO extends AbstractDTO implements InterfaceDTO
     }
     public function messages(): array
     {
-        return[];
+        return[
+            'person.exists' => 'Campo CPF, invalido!'
+        ];
     }
     public function validator(): Validator
     {

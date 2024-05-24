@@ -53,7 +53,7 @@ class AccessTokenController extends Controller
         $verificar = $this->accessTokenServices->verifyBelongUser($tokenDTO->token, $tokenDTO->person);
         if(!$verificar){
             return response()->json([
-                'message' => 'Token não pertencente!! CODIGO-402',
+                'message' => 'CPF inválido, verique o campo digitado!! CODIGO-402',
                 'status'=> 402
             ], 402);
         }

@@ -72,7 +72,7 @@ class AccessTokenServices
             DB::commit();
 
             return response()->json([
-                'message'=> 'Senha atualizada e autentificação confirma, seja bem vindo, faça login!',
+                'message'=> 'Senha cadastrada e autentificação confirma, seja bem vindo, faça login!',
                 'status'=> 200
             ], 200);
         }catch(Exception $e){
