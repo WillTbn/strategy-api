@@ -8,6 +8,7 @@ use App\Models\AccessToken;
 use App\Models\Account;
 use App\Models\User;
 use Exception;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -20,6 +21,11 @@ class UserServices
     {
         $email = Account::with('user')->where('person', $person)->first()->user->email;
         return $email;
+    }
+    public function getUserByPerson(string $person) :User
+    {
+        $user = Account::with('user')->where('person', $person)->first()->user;
+        return $user;
     }
     public function getAll($role_id):Collection
     {
@@ -115,5 +121,10 @@ class UserServices
                 'status'=> 500
             ], 500);
         }
+    }
+
+    public function setResertPasswordLink(User $user)
+    {
+
     }
 }

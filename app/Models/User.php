@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Enum\RoleEnum;
+use App\Notifications\ResetPasswordNotification;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -63,6 +64,11 @@ class User extends Authenticatable
         if($role == RoleEnum::Master)
             return $query->whereNot('id', Auth::user('api')->id)->whereNot('role_id', RoleEnum::Client);
         return $query->whereNot('id', Auth::user('api')->id)->whereNot('role_id', RoleEnum::Master);
+    }
+    public function sendPasswordResetNotification($token)
+    {
+        $url = env('APP_URL_FRONT', 'http://localhost:9010/').'login?tokenRemenber='.$token;
+        $this->notify(new ResetPasswordNotification($url));
     }
     public function account(): HasOne
     {
