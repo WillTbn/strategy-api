@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
+use App\DataTransferObject\Register\RegisterDTO;
 use App\DataTransferObject\UserAdm\UseradmDTO;
 use App\Enum\RoleEnum;
 use App\Models\AccessToken;
 use App\Models\Account;
 use App\Models\User;
+use App\Models\UserWallet;
 use Exception;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Database\Eloquent\Collection;
@@ -71,6 +73,59 @@ class UserServices
             DB::commit();
             return response()->json([
                 'message'=> 'Usuário criado com sucesso!',
+                'user' => $user,
+                'status'=> 200
+            ], 200);
+            // return $user;
+        }catch(Exception $e){
+            Log::error('exception ->'.$e);
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Erro ao cria usuário!',
+                'exception' => $e,
+                'status'=> 500
+            ], 500);
+        }
+    }
+    public function createClient(RegisterDTO $register)
+    {
+        try{
+            DB::beginTransaction();
+            // 1. Cria user;
+            $user = new User();
+            $user->name = $register->name;
+            $user->email =  $register->email;
+            $user->password = Hash::make($register->password);
+            $user->role_id = $register->getRole();
+            $user->saveOrFail();
+
+            // 2. Preenche os dados da tabela account;
+            $account = new Account();
+            $account->person = $register->person;
+            $account->birthday = $register->birthday;
+            $account->notifications = $register->notifications;
+            $account->type_of_investor = $register->type_of_investor;
+            $account->telephone = $register->telephone;
+            $account->phone = $register->phone;
+            $account->genre = $register->genre;
+            $account->address_street = $register->address_street;
+            $account->address_state = $register->address_state;
+            $account->address_number = $register->address_numbers;
+            $account->address_district = $register->address_district;
+            $account->address_zip_code = $register->address_zip_code;
+            $account->address_city = $register->address_city;
+            $account->address_country = $register->address_country;
+            $account->user_id = $user->id;
+            $account->saveOrFail();
+            // 3. Preenche os dados da tabela user_wallets;
+            $wallet = new UserWallet();
+            $wallet->user_id = $user->id;
+            $wallet->saveOrFail();
+            // 4. dispara e-mail com token de acesso (estuda cria uma nova tabela com código de verificação).
+            DB::commit();
+            return response()->json([
+                'message'=> 'Seja bem, vindo pode agora você pode acessar nossa plataforma.',
+                'email' => $user->email,
                 'user' => $user,
                 'status'=> 200
             ], 200);

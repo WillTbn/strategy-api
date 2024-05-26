@@ -54,6 +54,5 @@ class UserController extends Controller
             ], 402);
         }
         return $response;
-
     }
 }

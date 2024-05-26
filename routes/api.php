@@ -60,6 +60,11 @@ Route::controller(AuthController::class)->prefix('/password')->as('password.')->
     Route::post('/forgot', 'forgotPassword')->name('forgot');
     Route::post('/reset', 'resetPassword')->name('reset');
 });
-
-Route::post('/validator-cpf', [RegisterController::class, 'verifyPersonAPI'])->name('validatorcpf');
-Route::post('/validator-cep', [RegisterController::class, 'verifyCep'])->name('validatorcep');
+//Register
+Route::controller(RegisterController::class)->prefix('/')->as('register.')->group(function(){
+    Route::post('/validator-cpf', 'verifyPersonAPI')->name('validatorcpf');
+    Route::post('/validator-cep', 'verifyCep')->name('validatorcep');
+    Route::post('/register', 'register')->name('client');
+});
+// Route::post('/validator-cpf', [RegisterController::class, 'verifyPersonAPI'])->name('validatorcpf');
+// Route::post('/validator-cep', [RegisterController::class, 'verifyCep'])->name('validatorcep');

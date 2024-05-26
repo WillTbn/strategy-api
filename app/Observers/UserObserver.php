@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Enum\RoleEnum;
 use App\Events\CreateUserAdm;
+use App\Events\User\CreatedClientUser;
 use App\Helpers\FileHelper;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
@@ -17,7 +18,8 @@ class UserObserver
      */
     public function created(User $user): void
     {
-        //
+        if($user->role_id == RoleEnum::Client)
+            event(new CreatedClientUser($user));
 
     }
 
