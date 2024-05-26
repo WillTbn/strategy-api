@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Observers\AccessTokenObserver;
 use App\Observers\ReportObserver;
 use App\Observers\UserObserver;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -28,5 +29,9 @@ class AppServiceProvider extends ServiceProvider
         Report::observe(ReportObserver::class);
         User::observe(UserObserver::class);
         AccessToken::observe(AccessTokenObserver::class);
+
+        Http::macro('textapi', function(){
+            return Http::acceptJson()->baseUrl(config('textapi.url'));
+        });
     }
 }

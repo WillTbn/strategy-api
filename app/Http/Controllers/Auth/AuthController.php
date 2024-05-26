@@ -6,6 +6,7 @@ use App\Enum\RoleEnum;
 use App\Events\User\PasswordReset;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\ApiTextServices;
 use App\Services\UserServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -102,4 +103,6 @@ class AuthController extends Controller
         }
         return response()->json(['error' => __($status)],500);
     }
+
+
 }

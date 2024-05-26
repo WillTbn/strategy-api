@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Auth\AccessTokenController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserBankAccountController;
 use App\Http\Controllers\UserController;
@@ -59,3 +60,6 @@ Route::controller(AuthController::class)->prefix('/password')->as('password.')->
     Route::post('/forgot', 'forgotPassword')->name('forgot');
     Route::post('/reset', 'resetPassword')->name('reset');
 });
+
+Route::post('/validator-cpf', [RegisterController::class, 'verifyPersonAPI'])->name('validatorcpf');
+Route::post('/validator-cep', [RegisterController::class, 'verifyCep'])->name('validatorcep');
