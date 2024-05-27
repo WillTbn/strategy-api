@@ -7,8 +7,11 @@ use App\DataTransferObject\UserAdm\UseradmDTO;
 use App\Enum\RoleEnum;
 use App\Models\AccessToken;
 use App\Models\Account;
+use App\Models\EmailVerifiedUser;
 use App\Models\User;
 use App\Models\UserWallet;
+use App\Notifications\SendCodeNotification;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Database\Eloquent\Collection;
@@ -91,6 +94,8 @@ class UserServices
     {
         try{
             DB::beginTransaction();
+            $code = substr(uniqid(rand()), 0, 5);
+            $dtaNow = Carbon::now();
             // 1. Cria user;
             $user = new User();
             $user->name = $register->name;
@@ -121,7 +126,15 @@ class UserServices
             $wallet = new UserWallet();
             $wallet->user_id = $user->id;
             $wallet->saveOrFail();
-            // 4. dispara e-mail com token de acesso (estuda cria uma nova tabela com código de verificação).
+
+            // 4. dispara e-mail com codidgo de autenticação.
+            $verified = new EmailVerifiedUser();
+            $verified->code =$code;
+            $verified->expires_at = $dtaNow->addDays(2);
+            $verified->user_id = $user->id;
+            $verified->saveOrFail();
+            $user->notify( new SendCodeNotification($verified->code));
+
             DB::commit();
             return response()->json([
                 'message'=> 'Seja bem, vindo pode agora você pode acessar nossa plataforma.',
@@ -181,5 +194,24 @@ class UserServices
     public function setResertPasswordLink(User $user)
     {
 
+    }
+    public function setEmailVerified(User $user)
+    {
+        try{
+            $user->email_verified_at = Carbon::now();
+            $user->saveOrFail();
+            return response()->json([
+                'message'=> 'Obáaaaa, você esta pronto para usar nossa plataforma.',
+                'user' => $user,
+                'status'=> 200
+            ], 200);
+        }catch( Exception $e){
+            Log::error('exception ->'.$e);
+            return response()->json([
+                'message' => 'Erro na atualização dos dados do Usuário!',
+                'exception' => $e,
+                'status'=> 500
+            ], 500);
+        }
     }
 }

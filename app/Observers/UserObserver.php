@@ -6,6 +6,7 @@ use App\Enum\RoleEnum;
 use App\Events\CreateUserAdm;
 use App\Events\User\CreatedClientUser;
 use App\Helpers\FileHelper;
+use App\Models\EmailVerifiedUser;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -18,8 +19,8 @@ class UserObserver
      */
     public function created(User $user): void
     {
-        if($user->role_id == RoleEnum::Client)
-            event(new CreatedClientUser($user));
+        // if($user->role_id == RoleEnum::Client)
+        //     event(new CreatedClientUser($user));
 
     }
 
@@ -28,9 +29,14 @@ class UserObserver
      */
     public function updated(User $user): void
     {
+        // tem que tira isso daqui
         if($user->isDirty('avatar') && $user->getOriginal('avatar')){
             $file = $this->getNameFile($user->getOriginal('avatar'));
             Storage::disk('public')->delete($file);
+        }
+        if($user->isDirty('email_verified_at')){
+           $veri = EmailVerifiedUser::where('user_id', $user->id)->first();
+           $veri->delete();
         }
     }
 

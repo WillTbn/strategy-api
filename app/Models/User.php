@@ -94,6 +94,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(AccessToken::class);
     }
+    public function emailVerifiedUser():HasOne
+    {
+        return $this->hasOne(EmailVerifiedUser::class);
+    }
     public function isClient():bool
     {
         return $this->role_id == 3;

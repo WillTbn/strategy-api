@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Services\ApiTextServices;
 use App\Services\UserServices;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -23,7 +24,8 @@ class RegisterController extends Controller
     }
     public function verifyPersonAPI(Request $request)
     {
-        $request['token'] = env('APIINVERTTEXTO_TOKEN');
+        $request['token'] = env('APIINVERTTEXTO_TOKEN', '7860|DZSwqYZeH0bXwHZBHB0ahAAEpnixBSiZ');
+          Log::info('verificando se o env esta reconhecendo -> '.  env('APIINVERTTEXTO_TOKEN'));
         $validator = Validator::make($request->all(), [
             'value' => 'required|unique:accounts,person'
         ],

@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Enum\RoleEnum;
 use App\Events\User\PasswordReset;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Services\ApiTextServices;
+use App\Services\EmailVerifiedServices;
 use App\Services\UserServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
@@ -20,8 +18,16 @@ use Illuminate\Validation\ValidationException;
 class AuthController extends Controller
 {
     private UserServices $userServices;
-    public function __construct(UserServices $userServices) {
+    private EmailVerifiedServices $emailServices;
+    private $loggedUser;
+    public function __construct(
+        UserServices $userServices,
+        EmailVerifiedServices $emailServices
+    )
+    {
         $this->userServices = $userServices;
+        $this->emailServices = $emailServices;
+        $this->loggedUser = Auth::user('api');
     }
     public function validateToken()
     {
@@ -103,6 +109,23 @@ class AuthController extends Controller
         }
         return response()->json(['error' => __($status)],500);
     }
+    public function verifyEmail()
+    {
+        if($this->loggedUser->emailVerifiedUser){
+            return $this->emailServices->resend($this->loggedUser) ;
+        }
+        return $this->emailServices->create($this->loggedUser);
+    }
 
+    public function authEmail()
+    {
+        if($this->loggedUser->emailVerifiedUser){
+            return $this->userServices->setEmailVerified($this->loggedUser);
+        }
+        return response()->json([
+            'message' => 'Token invalido, verifique.',
+            'status'=> 200
+        ],200);
+    }
 
 }

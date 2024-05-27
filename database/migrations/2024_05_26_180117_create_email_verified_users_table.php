@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('email_verified_user', function (Blueprint $table) {
+        Schema::create('email_verified_users', function (Blueprint $table) {
             $table->id();
             $table->string('code');
-            $table->date('expires_at');
+            $table->timestamp('expires_at');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('email_verified_user');
+        Schema::dropIfExists('email_verified_users');
     }
 };

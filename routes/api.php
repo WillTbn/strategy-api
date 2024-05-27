@@ -11,9 +11,12 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function(){
+
     Route::prefix('/auth')->as('auth.')->group(function () {
         Route::get('/validate', [AuthController::class, 'validateToken'])->name('validateToken');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+        Route::post('/verifyemail', [AuthController::class, 'verifyEmail'])->name('verifyemail');
+        Route::post('/authemail', [AuthController::class, 'authEmail'])->name('authemail');
     });
 
     Route::controller(ReportController::class)->prefix('/reports')->as('reports.')->group(function(){
