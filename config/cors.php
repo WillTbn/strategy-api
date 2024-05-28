@@ -15,11 +15,11 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie', 'api/users/create'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:9010'],
+    'allowed_origins' => ['http://localhost:9010', 'https://test.strategyanalytics.com.br/'],
 
     'allowed_origins_patterns' => [],
 
