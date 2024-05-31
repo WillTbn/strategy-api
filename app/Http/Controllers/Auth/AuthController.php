@@ -10,6 +10,7 @@ use App\Services\UserServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password as RulesPassword;
@@ -45,10 +46,11 @@ class AuthController extends Controller
     }
     public function logout(Request $request)
     {
+        $request->user()->tokens()->delete();
 
-        $request->user()->currentAccessToken()->delete();
+        // $request->user()->currentAccessToken()->delete();
 
-        return response()->json(['message' => 'Logged out successfully'], 200);
+        return response()->json(['message' => 'Deslogado com sucesso!'], 200);
     }
     public function forgotPassword(Request $request)
     {
@@ -68,12 +70,14 @@ class AuthController extends Controller
         $status = Password::sendResetLink(
            $user->only('email')
         );
+        Log::info('E-mail de forgotPassword senhdo enviado para ->', $user->email);
         if($status == Password::RESET_LINK_SENT){
             return response()->json([
                 'message' => __($status),
                 'status'=>200
             ], 200);
         }
+        Log::info('Se cheguei até aqui, tem algo errado -> ', $user->email);
         throw ValidationException::withMessages([
             'email' => [trans($status)]
         ]);
