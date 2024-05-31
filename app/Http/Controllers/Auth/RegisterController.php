@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\DataTransferObject\Register\RegisterDTO;
 use App\Http\Controllers\Controller;
+use App\Rules\ValidateAge;
 use App\Services\ApiTextServices;
 use App\Services\UserServices;
 use Illuminate\Http\Request;
@@ -27,9 +28,14 @@ class RegisterController extends Controller
         $request['token'] = env('APIINVERTTEXTO_TOKEN', '7860|DZSwqYZeH0bXwHZBHB0ahAAEpnixBSiZ');
           Log::info('verificando se o env esta reconhecendo -> '.  env('APIINVERTTEXTO_TOKEN'));
         $validator = Validator::make($request->all(), [
-            'value' => 'required|unique:accounts,person'
+            'value' => 'required|unique:accounts,person',
+            'email' => 'required|unique:users,email',
+            'birthday' => ['required', new ValidateAge]
         ],
-            ['value.unique' => 'CPF já sendo utilizado em nossa plataforma!']
+            [
+                'value.unique' => 'CPF já sendo utilizado em nossa plataforma!',
+                'email.unique' => 'E-mail já sendo utilizado em nossa plataforma!'
+            ],
         );
         $validator->validate();
         // tem que verificar se o CPF já não tem cadastrado em nossa base de dados

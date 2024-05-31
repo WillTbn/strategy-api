@@ -51,7 +51,7 @@ class RegisterDTO extends AbstractDTO implements InterfaceDTO
             'notifications'=> ['required', Rule::enum(NotificationEnum::class)],
             'telephone' => '',
             'phone' => 'string',
-            'genre' => 'in:M,W,L',
+            'genre' => 'in:M,W,L,O',
             'address_street' =>'string',
             'address_state' =>'string',
             'address_number' =>'string',
