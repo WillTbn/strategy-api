@@ -70,7 +70,7 @@ class AuthController extends Controller
         $status = Password::sendResetLink(
            $user->only('email')
         );
-        Log::info('E-mail de forgotPassword senhdo enviado para ->', $user->email);
+        Log::info('E-mail de forgotPassword senhdo enviado para ->'.$user->email);
         if($status == Password::RESET_LINK_SENT){
             return response()->json([
                 'message' => __($status),
