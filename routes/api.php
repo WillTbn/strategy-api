@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AccessTokenController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserBankAccountController;
 use App\Http\Controllers\UserController;
@@ -45,9 +46,13 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::delete('/{bank}', 'delete')->name('delete');
     });
 
-
     Route::controller(AccessTokenController::class)->prefix('/tokens')->as('tokens.')->group(function(){
         Route::put('/{accessToken}', 'resend')->name('resend');
+    });
+
+    Route::controller(ClientController::class)->prefix('/clients')->as('clients.')->group(function () {
+        Route::get('/', 'store')->name('store');
+        Route::get('/{id}', 'index')->name('index');
     });
 
 

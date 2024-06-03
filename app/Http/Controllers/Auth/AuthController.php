@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\EmailVerifiedServices;
 use App\Services\UserServices;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -32,13 +33,15 @@ class AuthController extends Controller
     }
     public function validateToken()
     {
-        $user = Auth::user('api');
+        // if()
         //return $user->verifield_email;exit;
-        if($user){
-            $get = User::where('id', $user->id)->clientOrAdmin($user->role_id)->first();
+        if(Auth::check()){
+            $get = User::where('id', $this->loggedUser->id)->clientOrAdmin($this->loggedUser->role_id)->first();
+            // $get = $this->loggedUser->account;
             return response()->json([
                 'status'=> '200',
                 'data' => $get,
+                'time_update'=>Carbon::now("America/Sao_Paulo")
 
             ], 200);
         }
