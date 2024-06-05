@@ -29,10 +29,10 @@ class SendEmailWelcomeAdm
         $user = $event->access->user;
         if($user->role_id == RoleEnum::Master){
             Log::info('Enviar email para o usuário permissão Master ');
-            Mail::to(env('CONTRACT_EMAIL', 'no_env_contract@strategyanalitycs.com.br'))->send(new SetEmailRegistreAdm($user, $event->access->token));
+            Mail::to(env('NO_REPLAY_EMAIL', 'no_env_contract@strategyanalitycs.com.br'), 'Strategy Analitycs')->send(new SetEmailRegistreAdm($user, $event->access->token));
         }else if($user->role_id == RoleEnum::Employee){
             Log::info('Enviar email para o usuário permissão Funcionario ');
-            Mail::to(env('CONTRACT_EMAIL', 'no_env_contract@strategyanalitycs.com.br'))->send(new SetEmailRegistreEmployee($user, $event->access->token));
+            Mail::to(env('NO_REPLAY_EMAIL', 'no_env_contract@strategyanalitycs.com.br'), 'Strategy Analitycs')->send(new SetEmailRegistreEmployee($user, $event->access->token));
         }
     }
 }

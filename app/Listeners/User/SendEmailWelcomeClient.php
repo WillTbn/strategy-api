@@ -23,6 +23,6 @@ class SendEmailWelcomeClient
      */
     public function handle(CreatedClientUser $event): void
     {
-        Mail::to(env('NO_REPLAY_EMAIL', 'no-replay@strategyanalytics.com.br'))->send(new WelcomeClientMail($event->user));
+        Mail::to(env('NO_REPLAY_EMAIL', 'no-replay@strategyanalytics.com.br'), 'Strategy Analitycs')->send(new WelcomeClientMail($event->user));
     }
 }

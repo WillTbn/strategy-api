@@ -52,13 +52,13 @@ class RegisterDTO extends AbstractDTO implements InterfaceDTO
             'telephone' => '',
             'phone' => 'string',
             'genre' => 'in:M,W,L,O',
-            'address_street' =>'string',
-            'address_state' =>'string',
-            'address_number' =>'string',
-            'address_district' =>'string',
-            'address_zip_code' =>'string',
-            'address_city' =>'string',
-            'address_country' =>'string',
+            'address_street' =>'',
+            'address_state' =>'',
+            'address_number' =>'',
+            'address_district' =>'',
+            'address_zip_code' =>'',
+            'address_city' =>'',
+            'address_country' =>'',
         ];
     }
     public function messages(): array
