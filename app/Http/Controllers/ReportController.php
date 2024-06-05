@@ -58,7 +58,7 @@ class ReportController extends Controller
             $request->document,
             $request->audio,
             $request->display_date_at,
-            $request->description, $request->audio
+            $request->description,
         );
         if($report->exception){
             return response()->json([
@@ -80,7 +80,8 @@ class ReportController extends Controller
             $this->loggedUser->id,
             $request->title,
             $request->description,
-            $request->type
+            $request->type,
+            $request->display_date_at,
         );
         if($resp){
             return response()->json([
