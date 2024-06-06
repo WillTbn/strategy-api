@@ -16,7 +16,7 @@ class AccessTokenObserver
     {
         Log::info('Event created token'.$accessToken);
         if($accessToken->user->role_id == RoleEnum::Master || $accessToken->user->role_id == RoleEnum::Employee){
-            Log::info('Event created user admin');
+            Log::info('Event created user admin or employee');
             event(new CreateUserAdm($accessToken));
         }
     }
