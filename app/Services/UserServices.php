@@ -133,9 +133,9 @@ class UserServices
             $verified->expires_at = $dtaNow->addDays(2);
             $verified->user_id = $user->id;
             $verified->saveOrFail();
-            $user->notify( new SendCodeNotification($verified->code));
 
             DB::commit();
+            event( new SendCodeNotification($verified->code));
             return response()->json([
                 'message'=> 'Seja bem, vindo pode agora você pode acessar nossa plataforma.',
                 'email' => $user->email,
