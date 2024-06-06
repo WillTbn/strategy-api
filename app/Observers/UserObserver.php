@@ -35,8 +35,10 @@ class UserObserver
             Storage::disk('public')->delete($file);
         }
         if($user->isDirty('email_verified_at')){
-           $veri = EmailVerifiedUser::where('user_id', $user->id)->first();
-           $veri->delete();
+            $veri = EmailVerifiedUser::where('user_id', $user->id)->first();
+            if($veri){
+                $veri->delete();
+            }
         }
     }
 
