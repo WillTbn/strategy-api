@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserBankAccountController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -33,7 +34,11 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::controller(UserController::class)->prefix('/users')->as('users.')->group(function(){
         Route::get('/', 'store')->name('all');
         Route::post('/create', 'create')->name('create');
+        Route::put('/role', 'updateRole')->name('updateRole');
 
+    });
+    Route::controller(RoleController::class)->prefix('/roles')->as('roles.')->group(function(){
+        Route::get('/', 'store')->name('all');
     });
 
     Route::controller(AccountController::class)->prefix('/account')->as('account.')->group(function (){

@@ -14,6 +14,7 @@ class Role extends Model
 
     protected $fillable = [
         'name',
+        'id'
     ];
     /**
      * The attributes that should be hidden for serialization.
@@ -21,7 +22,6 @@ class Role extends Model
      * @var array<int, string>
      */
     protected $hidden = [
-        'id',
         'created_at',
         'updated_at',
         'deleted_at'

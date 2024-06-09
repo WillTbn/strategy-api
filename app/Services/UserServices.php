@@ -36,6 +36,26 @@ class UserServices
     {
         return User::verifyUser($role_id)->with(['accessToken'])->get();
     }
+    public function roleUpdate(int $user_id, int $role_id)
+    {
+        try{
+            $user = User::where('id', $user_id)->first();
+            $user->role_id = $role_id;
+            $user->updateOrFail();
+            return response()->json([
+                'message' => 'Dado nova permissão para o usuário '.$user->name,
+                'user' => $user,
+                'status' => 200
+            ], 200);
+        }catch( Exception $e){
+            Log::error('exception ->'.$e);
+            return response()->json([
+                'message' => 'Erro na atualização dos dados do Usuário!',
+                'exception' => $e,
+                'status'=> 500
+            ], 500);
+        }
+    }
     public function createAdmin(UseradmDTO $data)
     {
         try{
