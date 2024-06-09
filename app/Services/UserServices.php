@@ -88,6 +88,10 @@ class UserServices
             $account->address_country = $data->address_country;
             $account->user_id = $user->id;
             $account->saveOrFail();
+            // 3. Preenche os dados da tabela user_wallets;
+            $wallet = new UserWallet();
+            $wallet->user_id = $user->id;
+            $wallet->saveOrFail();
             AccessToken::create([
                 'token' => $hashedToken,
                 'user_id' => $user->id,
