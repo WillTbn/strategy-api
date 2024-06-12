@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('deposit_receipt', function (Blueprint $table) {
+        Schema::create('investment_perfomances', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_wallet_id')->constrained()->onDelete('cascade');
-            $table->decimal('value');
-            $table->string('image')->nullable();
-            $table->char('status');
-            $table->string('transaction_id');
+            $table->foreignId('investment_id')->constrained()->onDelete('cascade');
+            $table->string('day');
+            $table->decimal('perfomance');
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('deposit_receipt');
+        Schema::dropIfExists('investment_perfomances');
     }
 };

@@ -4,23 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class UserWallet extends Model
+class UserExtract extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'id',
         'user_id',
-        'current_balance',
-        'current_investment',
-        'current_loan'
+        'transaction_name',
+        'transaction_date',
+        'transaction_data',
+        'transaction_value'
     ];
-    public function DepositReceipts():HasMany
-    {
-        return $this->hasMany(DepositReceipt::class, 'user_wallet_id', 'id');
-    }
     public function user():HasOne
     {
         return $this->hasOne(User::class);
