@@ -24,7 +24,7 @@ class ClientServices
             'users.id',
             'users.name',
             'users.email',
-            DB::raw('CONCAT("'.env("APP_URL").'",accounts.avatar) as avatar'),
+            DB::raw('CONCAT("'.env("APP_URL").'/storage/users/'.'",accounts.avatar) as avatar'),
             'accounts.notifications as notification',
             DB::raw('DATE_FORMAT(accounts.birthday, "%d/%m/%Y") as birthday'),
             'user_wallets.current_balance as balance',
