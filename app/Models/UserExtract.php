@@ -20,4 +20,10 @@ class UserExtract extends Model
     {
         return $this->hasOne(User::class);
     }
+
+    public function getTransactionDataAttribute($value)
+    {
+        return json_decode($value);
+    }
+
 }

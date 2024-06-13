@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Models\UserExtract;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;
 
 class UserExtractServices
@@ -37,5 +38,10 @@ class UserExtractServices
                 'status'=> 500
             ], 500);
         }
+    }
+    public function get(int $user):Collection
+    {
+        $response = UserExtract::where('user_id', $user)->get();
+        return $response;
     }
 }
