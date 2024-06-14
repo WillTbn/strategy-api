@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('investments', function (Blueprint $table) {
+        Schema::create('user_investments', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('type')->nullable();
-            $table->boolean('active')->default(true);
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('investment_id')->constrained();
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('investments');
+        Schema::dropIfExists('user_investments');
     }
 };

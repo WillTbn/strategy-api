@@ -8,6 +8,7 @@ use App\Enum\RoleEnum;
 use App\Notifications\ResetPasswordNotification;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -97,6 +98,10 @@ class User extends Authenticatable
     public function emailVerifiedUser():HasOne
     {
         return $this->hasOne(EmailVerifiedUser::class);
+    }
+    public function userInvestments():HasMany
+    {
+        return $this->hasMany(UserInvestment::class);
     }
     public function isClient():bool
     {
