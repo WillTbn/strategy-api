@@ -14,7 +14,10 @@ return new class extends Migration
         Schema::create('investments', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->string('annual_estimate')->nullable();
+            $table->string('monthly_estimate')->nullable();
             $table->string('type')->nullable();
+            $table->boolean('initial')->default(false);
             $table->boolean('active')->default(true);
             $table->timestamps();
         });

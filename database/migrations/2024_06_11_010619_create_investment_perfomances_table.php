@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('investment_id')->constrained()->onDelete('cascade');
             $table->string('day');
-            $table->decimal('perfomance');
+            $table->decimal('perfomance', 8,3);
             $table->timestamps();
         });
     }

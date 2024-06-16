@@ -29,7 +29,7 @@ class UserTableSeeder extends Seeder
         User::factory()
             ->has(Account::factory(1,['person' =>env('CLIENT_PERSON', fake()->cpf())]))
             ->has(UserBankAccount::factory())
-            ->has(UserWallet::factory())
+            // ->has(UserWallet::factory())
             ->has(
                 UserWallet::factory()->has(DepositReceipt::factory())
             )->create([

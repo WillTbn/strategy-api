@@ -14,6 +14,9 @@ class Investment extends Model
     protected $fillable = [
         'name',
         'type',
+        'annual_estimate',
+        'monthly_estimate',
+        'initial',
         'active'
     ];
     public function userInvestments():BelongsTo

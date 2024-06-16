@@ -23,13 +23,16 @@ class InvestmentTableSeeder extends Seeder
             $inv = Investment::factory()->create([
                 'name' => $invest['name'],
                 'type' => $invest['type'],
+                'annual_estimate' => $invest['profAnnual'],
+                'monthly_estimate' => $invest['profMonthly'],
+                'initial' => $invest['initial'],
             ]);
             $calcM = $invest['profMonthly']/$month;
             for($i=1;$i<=$month;$i++){
                 InvestmentPerfomance::factory()->create([
                     'investment_id' => $inv->id,
                     'day' => $i,
-                    'perfomance' => number_format($calcM,2)
+                    'perfomance' => number_format($calcM,3)
 
                 ]);
             }

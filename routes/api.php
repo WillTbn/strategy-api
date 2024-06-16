@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\Client\UserExtractController;
+use App\Http\Controllers\InvestmentController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserBankAccountController;
@@ -59,11 +60,17 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::controller(ClientController::class)->prefix('/clients')->as('clients.')->group(function () {
         Route::get('/', 'store')->name('store');
         Route::get('/{id}', 'index')->name('index');
+        Route::put('/investment', 'addInvestment')->name('addInvestment');
     });
 
     Route::controller(UserExtractController::class)->prefix('/extract')->as('extract.')->group(function () {
         Route::get('/{id}', 'index')->name('index');
     });
+
+    Route::controller(InvestmentController::class)->prefix('/investment')->as('investment.')->group(function(){
+        Route::get('/', 'store')->name('store');
+    });
+
 });
 Route::post('login', [LoginController::class, 'login'])->name('login');
 Route::get('/user', [UserController::class, 'index'])->middleware('auth:sanctum');
