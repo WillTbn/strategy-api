@@ -61,17 +61,23 @@ class ClientServices
         ->get();
         return $response;
     }
+
     public function addInvestimentUser(int $user, int $investment, bool $transiction = false)
     {
         try{
             DB::beginTransaction();
-            $inve = new UserInvestment();
-            $inve->user_id = $user;
-            $inve->investment_id = $investment;
-            $inve->saveOrFail();
+            // $inve = new UserInvestment();
+            // $inve->user_id = $user;
+            // $inve->investment_id = $investment;
+            // $inve->saveOrFail();
+            $inve = DB::table('user_investments')
+                ->updateOrInsert(
+                    ['user_id' => $user],
+                    ['investment_id' => $investment]
+                );
 
-            if($transiction){
-                $getWallet = UserWallet::where('user_id', $inve->user_id)->first();
+            if($transiction && $inve){
+                $getWallet = UserWallet::where('user_id', $user)->first();
                 Log::info('Foi transferido valor para investmento do ID.'.json_decode($getWallet->user_id));
                 $value_add = $getWallet->current_balance;
                 $getWallet->current_investment+=$value_add;
