@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DataTransferObject\Clients\InvestmentDTO;
 use App\Models\UserExtract;
 use App\Models\UserInvestment;
 use App\Models\UserWallet;
@@ -27,29 +28,28 @@ class UserInvestmentServices
         return $response;
     }
     public function addInvestmentUser(
-        $user_id,
-        $investmentId = null
+        InvestmentDTO $investmentDTO
     )
     {
         try{
-            $investmentId =  $this->investmentServices->getInitialId();
+            // $investmentId = $investmentId != null ?  $investmentId : $this->investmentServices->getInitialId();
             DB::beginTransaction();
 
             $response = response()->json([
                 'message' => 'Atualizado com sucesso'
             ], 200);
 
-            $verifyExistInvestment = $this->getInvestmentUser($user_id);
+            $verifyExistInvestment = $this->getInvestmentUser($investmentDTO->user_id);
             if($verifyExistInvestment){
-                $verifyExistInvestment->investment_id = $investmentId;
+                $verifyExistInvestment->investment_id = $investmentDTO->getInvestment();
                 $verifyExistInvestment->updateOrFail();
                 DB::commit();
                 return $response;
             }
 
             $newInvestmetUser = new UserInvestment();
-            $newInvestmetUser->user_id = $user_id;
-            $newInvestmetUser->investment_id = $investmentId;
+            $newInvestmetUser->user_id = $investmentDTO->user_id;
+            $newInvestmetUser->investment_id = $investmentDTO->getInvestment();
             $newInvestmetUser->saveOrFail();
             DB::commit();
             return $response;

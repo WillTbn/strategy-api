@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Services;
+
+use App\DataTransferObject\Clients\InvestmentDTO;
 use App\Models\UserExtract;
 use App\Models\UserWallet;
 use Carbon\Carbon;
@@ -13,13 +15,16 @@ class UserWalletServices
 {
     private UserExtractServices $extractServices;
     private UserInvestmentServices $userinvestmentServices;
+    private InvestmentServices $investmentServices;
     public function __construct(
         UserExtractServices $extractServices,
-        UserInvestmentServices $userinvestmentServices
+        UserInvestmentServices $userinvestmentServices,
+        InvestmentServices $investmentServices
     )
     {
         $this->extractServices = $extractServices;
         $this->userinvestmentServices = $userinvestmentServices;
+        $this->investmentServices = $investmentServices;
     }
     public function updateValueBalance(int $user_id, float $value, Collection $trans_data)
     {
@@ -49,7 +54,7 @@ class UserWalletServices
         }
     }
     /**
-     * $investment Tem que ser passado, caso não, será colocado o padrão pre-definido no banco de dados
+     * $investment Tem que ser passado, caso não, será colocado o padrão pre-definido do banco de dados
      */
     public function updateValueInvestiment(int $user_id, float $value, Collection $trans_data, $investiment =null)
     {
@@ -61,7 +66,9 @@ class UserWalletServices
             Log::info('Dados atualizados da carteira com sucesso');
             $this->extractServices->createExtract($wallet->user_id, $trans_data['trans_name'], $value, now(),  $trans_data);
             if(!$investiment){
-                $this->userinvestmentServices->addInvestmentUser($wallet->user_id);
+                Log::info('iremos atualizar o investimento do usuario wallet -> '. json_encode($wallet));
+                $investimentDTO = new InvestmentDTO(...['user_id'=> $wallet->user_id, 'investment_id' => $investiment, 'investmentServices'=> $this->investmentServices]);
+                $this->userinvestmentServices->addInvestmentUser($investimentDTO);
             }
             DB::commit();
             return response()->json([

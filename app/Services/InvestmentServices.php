@@ -16,7 +16,6 @@ class InvestmentServices
     public function getInitialId(): int
     {
         $response = Investment::where('initial', true)->first();
-        Log::info('Deveria de ser esse->'. json_encode($response));
         return $response->id;
     }
 }
