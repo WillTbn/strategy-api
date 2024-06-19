@@ -3,7 +3,13 @@
 namespace App\Services;
 
 use App\DataTransferObject\Clients\InvestmentDTO;
+use App\Enum\TransictionStatus;
+use App\EssentialUtil\IncomePerfomance;
+use App\EssentialUtil\TransictionWallet;
+use App\Helpers\CollectHelper;
+
 use App\Models\UserExtract;
+use App\Models\UserInvestment;
 use App\Models\UserWallet;
 use Carbon\Carbon;
 use Exception;
@@ -13,6 +19,7 @@ use Illuminate\Support\Facades\Log;
 
 class UserWalletServices
 {
+    use CollectHelper;
     private UserExtractServices $extractServices;
     private UserInvestmentServices $userinvestmentServices;
     private InvestmentServices $investmentServices;
@@ -86,5 +93,46 @@ class UserWalletServices
                 'status'=> 500
             ], 500);
         }
+    }
+
+    public function actionUpdateWalletInvestment()
+    {
+
+        $wallet = UserWallet::where('current_investment', '>', 0.0)->get()->pluck('current_investment', 'user_id');
+        Log::info('Inicializado update de todos os investimentos |actionUpdateWalletInvestment|');
+        foreach($wallet as $key => $value){
+            $investmentUser = UserInvestment::where('user_id', $key)->with(['investment.investmentPerfomances'])->get();
+            $performanceInvesment = $investmentUser[0]->investment->investmentPerfomances[0]->perfomance;
+
+            $income = new IncomePerfomance();
+            $income->setPerfomance($performanceInvesment);
+            $income->setCurrentNow($value);
+
+            $newCurrentInvestment = $income->getResulCalPor();
+            Log::info('valor atualizado sensiveLog -> '.$newCurrentInvestment);
+
+            // $trans_data = $this->getTransIncomeUpdate($investmentUser[0]->investment, 'rendimento');
+            $trans = new TransictionWallet();
+            $trans->setPerfomance($investmentUser[0]->investment);
+            $trans->setTransName(TransictionStatus::PRDAA);
+            $trans->setTransDescription(TransictionStatus::PRDAA);
+            $trans->setTransiction();
+
+            $userWallet = UserWallet::where('user_id', $key)->first();
+
+            $userWallet->current_investment = $newCurrentInvestment;
+            $userWallet->updateOrFail();
+            $this->extractServices->createExtract(
+                $userWallet->user_id,
+                $trans->getTransName(),
+                $income->getValueAddWallet(),
+                now(),
+                $trans->getTransData()
+            );
+
+        }
+        Log::info('Sair do update |actionUpdateWalletInvestment|');
+        // $this->userWalletServices->actionUpdateWalletInvuserestment();
+
     }
 }

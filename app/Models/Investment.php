@@ -23,7 +23,7 @@ class Investment extends Model
     {
         return $this->belongsTo(UserInvestment::class);
     }
-    public function investmentPerformances():HasMany
+    public function investmentPerfomances():HasMany
     {
         return $this->hasMany(InvestmentPerfomance::class);
     }

@@ -2,18 +2,21 @@
 
 namespace App\Observers;
 
-use App\Helpers\CollectHelper;
+
 use App\Enum\StatusDeposit;
+use App\Enum\TransictionStatus;
+use App\EssentialUtil\TransictionWallet;
 use App\Models\DepositReceipt;
-use App\Models\UserExtract;
-use App\Services\UserExtractServices;
 use App\Services\UserWalletServices;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 
 class DepositReceiptObserver
 {
-    use CollectHelper;
+    // use CollectHelper;
+    /**
+     * datos de transação
+    */
+    private $transictionData;
     // public UserExtractServices $userExtractServices;
     public UserWalletServices $userWalletService;
     public function __construct(
@@ -24,6 +27,15 @@ class DepositReceiptObserver
         // $this->userExtractServices = $userExtractServices;
         $this->userWalletService = $userWalletService;
     }
+    public function getTransDeposit(DepositReceipt $depositReceipt, TransictionStatus $trans)
+    {
+        $this->transictionData  = new TransictionWallet();
+        $this->transictionData->setDeposit($depositReceipt);
+        $this->transictionData->setTransName($trans);
+        $this->transictionData->setTransDescription($trans);
+        $this->transictionData->setTransiction();
+    }
+
     /**
      * Handle the DepositReceipt "created" event.
      */
@@ -32,11 +44,12 @@ class DepositReceiptObserver
         Log::info('Vai grava esse valor na tabela -> '.$depositReceipt->isDirty('status'));
         if($depositReceipt->isDirty('status') && $depositReceipt->status == StatusDeposit::Confirmed){
             Log::info('foi criado Deposit com status confimed -> '.json_encode($depositReceipt->userWallet->user_id));
-            $trans_data = $this->getTransDeposit($depositReceipt, 'pix');
             if($depositReceipt->investment){
-                $this->userWalletService->updateValueInvestiment($depositReceipt->userWallet->user_id, $depositReceipt->value, $trans_data);
+                $this->getTransDeposit($depositReceipt, TransictionStatus::BYADI);
+                $this->userWalletService->updateValueInvestiment($depositReceipt->userWallet->user_id, $depositReceipt->value, $this->transictionData->getTransData());
             }else{
-                $this->userWalletService->updateValueBalance($depositReceipt->userWallet->user_id, $depositReceipt->value, $trans_data);
+                $this->getTransDeposit($depositReceipt, TransictionStatus::BYADW);
+                $this->userWalletService->updateValueBalance($depositReceipt->userWallet->user_id, $depositReceipt->value, $this->transictionData->getTransData());
             }
             // $this->userExtractServices->createExtract(
             //     $depositReceipt->userWallet->user_id, 'deposit', $depositReceipt->value, Carbon::now()
@@ -51,11 +64,12 @@ class DepositReceiptObserver
     {
         if($depositReceipt->isDirty('status') && $depositReceipt->status == StatusDeposit::Confirmed){
             Log::info('foi atualizado Deposit com status para confirmed');
-            $trans_data = $this->getTransDeposit($depositReceipt, 'pix');
             if($depositReceipt->investment){
-                $this->userWalletService->updateValueInvestiment($depositReceipt->userWallet->user_id, $depositReceipt->value, $trans_data );
+                $this->getTransDeposit($depositReceipt, TransictionStatus::BYADI);
+                $this->userWalletService->updateValueInvestiment($depositReceipt->userWallet->user_id, $depositReceipt->value, $this->transictionData->getTransData());
             }else{
-                $this->userWalletService->updateValueBalance($depositReceipt->userWallet->user_id, $depositReceipt->value, $trans_data );
+                $this->getTransDeposit($depositReceipt, TransictionStatus::BYADW);
+                $this->userWalletService->updateValueBalance($depositReceipt->userWallet->user_id, $depositReceipt->value, $this->transictionData->getTransData());
             }
             // $this->userExtractServices->createExtract(
             //     $depositReceipt->userWallet->user_id, 'deposit', $depositReceipt->value, Carbon::now()

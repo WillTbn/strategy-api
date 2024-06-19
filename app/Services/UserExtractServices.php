@@ -28,8 +28,8 @@ class UserExtractServices
                 'data' => $trans_data,
             ]);
             $trans->saveOrFail();
+            // Log::info('deu tudo certo....., criando log no extrado de ->'.json_encode($trans) );
             return $trans;
-            Log::info('deu tudo certo....., criando log no extrado de ->'.json_encode($trans) );
         }catch(Exception $e){
             Log::error('exception ->'.$e);
             return response()->json([

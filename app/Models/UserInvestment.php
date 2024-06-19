@@ -18,7 +18,7 @@ class UserInvestment extends Model
     {
         return $this->belongsTo(User::class, 'id', 'user_id');
     }
-    public function investiment():HasOne
+    public function investment():HasOne
     {
         return $this->hasOne(Investment::class, 'id', 'investment_id');
     }
