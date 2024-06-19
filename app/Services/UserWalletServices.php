@@ -95,44 +95,8 @@ class UserWalletServices
         }
     }
 
-    public function actionUpdateWalletInvestment()
+    public function getUSerInvestments()
     {
-
-        $wallet = UserWallet::where('current_investment', '>', 0.0)->get()->pluck('current_investment', 'user_id');
-        Log::info('Inicializado update de todos os investimentos |actionUpdateWalletInvestment|');
-        foreach($wallet as $key => $value){
-            $investmentUser = UserInvestment::where('user_id', $key)->with(['investment.investmentPerfomances'])->get();
-            $performanceInvesment = $investmentUser[0]->investment->investmentPerfomances[0]->perfomance;
-
-            $income = new IncomePerfomance();
-            $income->setPerfomance($performanceInvesment);
-            $income->setCurrentNow($value);
-
-            $newCurrentInvestment = $income->getResulCalPor();
-            Log::info('valor atualizado sensiveLog -> '.$newCurrentInvestment);
-
-            // $trans_data = $this->getTransIncomeUpdate($investmentUser[0]->investment, 'rendimento');
-            $trans = new TransictionWallet();
-            $trans->setPerfomance($investmentUser[0]->investment);
-            $trans->setTransName(TransictionStatus::PRDAA);
-            $trans->setTransDescription(TransictionStatus::PRDAA);
-            $trans->setTransiction();
-
-            $userWallet = UserWallet::where('user_id', $key)->first();
-
-            $userWallet->current_investment = $newCurrentInvestment;
-            $userWallet->updateOrFail();
-            $this->extractServices->createExtract(
-                $userWallet->user_id,
-                $trans->getTransName(),
-                $income->getValueAddWallet(),
-                now(),
-                $trans->getTransData()
-            );
-
-        }
-        Log::info('Sair do update |actionUpdateWalletInvestment|');
-        // $this->userWalletServices->actionUpdateWalletInvuserestment();
-
+        return UserWallet::where('current_investment', '>', 0.0)->get()->pluck('current_investment', 'user_id');
     }
 }

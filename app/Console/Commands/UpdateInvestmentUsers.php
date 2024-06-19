@@ -3,24 +3,20 @@
 namespace App\Console\Commands;
 
 use App\Helpers\InvestmentHelper;
-use App\Models\UserInvestment;
-use App\Models\UserWallet;
-use App\Services\UserWalletServices;
-use Exception;
+use App\Services\Actions\Wallet\UpdatewalletActions;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class UpdateInvestmentUsers extends Command
 {
     use InvestmentHelper;
-    private UserWalletServices $userWalletServices;
+    // private UserWalletServices $userWalletServices;
+    private UpdateWalletActions $updateWalletActions;
     public function __construct(
-        UserWalletServices $userWalletServices
+        UpdateWalletActions $updateWalletActions
     )
     {
         parent::__construct();
-        $this->userWalletServices = $userWalletServices;
+        $this->updateWalletActions = $updateWalletActions;
     }
 
     /**
@@ -43,7 +39,7 @@ class UpdateInvestmentUsers extends Command
     public function handle()
     {
         try {
-            $this->userWalletServices->actionUpdateWalletInvestment();
+            $this->updateWalletActions->updateExec();
         } catch (\Exception $e) {
             $this->error('Error: '.$e);
         }

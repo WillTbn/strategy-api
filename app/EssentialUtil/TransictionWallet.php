@@ -19,10 +19,36 @@ class TransictionWallet
     private string $transName;
 
     /**
+     * Value do current_investment antigo do usuário
+    */
+    private float $transOldInvestment;
+
+    /**
      * Descrição da Transação
     */
     private string $transDescription;
-    /**
+
+    public function getTransName()
+    {
+        return $this->transName;
+    }
+    public function getTransDescription()
+    {
+        return $this->transDescription;
+    }
+    public function getTransData()
+    {
+        return $this->transData;
+    }
+    public function getTransOldInvesment()
+    {
+        return $this->transOldInvestment;
+    }
+    public function setOldValueInvestment(float $current):float
+    {
+        return $this->transOldInvestment = $current;
+    }
+     /**
      * Metodo que responsavel por pegar os dado da tabela Investiment necessários
      * @param $performance
     */
@@ -70,18 +96,7 @@ class TransictionWallet
     {
         $this->transData['trans_name'] = $this->transName;
         $this->transData['trans_description'] = $this->transDescription;
-        return $this->transData;
-    }
-    public function getTransName()
-    {
-        return $this->transName;
-    }
-    public function getTransDescription()
-    {
-        return $this->transDescription;
-    }
-    public function getTransData()
-    {
+        $this->transData['value_investment_old'] = $this->transOldInvestment;
         return $this->transData;
     }
 

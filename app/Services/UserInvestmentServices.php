@@ -64,4 +64,10 @@ class UserInvestmentServices
             ], 500);
         }
     }
+
+    public function getInvestmentPeformances(int $user_id)
+    {
+        $userInvestment = UserInvestment::where('user_id', $user_id)->with(['investment.investmentPerfomances'])->get();
+        return $userInvestment;
+    }
 }

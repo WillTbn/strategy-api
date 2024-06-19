@@ -39,9 +39,22 @@ class UserExtractServices
             ], 500);
         }
     }
-    public function get(int $user):Collection
+    public function get(int $user)
     {
-        $response = UserExtract::where('user_id', $user)->get();
-        return $response;
+        try{
+            $response = UserExtract::where('user_id', $user)->get();
+            return response()->json([
+                'message' => 'Dados do extrato!',
+                'extract' => $response,
+                'status'=> 200
+            ], 200);
+        }catch(Exception $e){
+            Log::error('exception ->'.$e);
+            return response()->json([
+                'message' => 'Erro ao pegar extrato!',
+                'exception' => $e,
+                'status'=> 500
+            ], 500);
+        }
     }
 }
