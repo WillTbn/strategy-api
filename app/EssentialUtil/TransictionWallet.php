@@ -21,12 +21,16 @@ class TransictionWallet
     /**
      * Value do current_investment antigo do usuário
     */
-    private float $transOldInvestment;
+    private ?float $transOldInvestment = null;
 
     /**
      * Descrição da Transação
     */
     private string $transDescription;
+    /**
+     * valor porcentagem adicionado a carteira
+    */
+    private ?float $transPorc = 0.0;
 
     public function getTransName()
     {
@@ -44,9 +48,17 @@ class TransictionWallet
     {
         return $this->transOldInvestment;
     }
+    public function getTransPorc()
+    {
+        return $this->transPorc;
+    }
     public function setOldValueInvestment(float $current):float
     {
         return $this->transOldInvestment = $current;
+    }
+    public function setPercentage(float $percentage):float
+    {
+        return $this->transPorc = $percentage;
     }
      /**
      * Metodo que responsavel por pegar os dado da tabela Investiment necessários
@@ -97,6 +109,7 @@ class TransictionWallet
         $this->transData['trans_name'] = $this->transName;
         $this->transData['trans_description'] = $this->transDescription;
         $this->transData['value_investment_old'] = $this->transOldInvestment;
+        $this->transData['percentage'] = $this->transPorc;
         return $this->transData;
     }
 

@@ -65,6 +65,7 @@ Route::middleware('auth:sanctum')->group(function(){
 
     Route::controller(UserExtractController::class)->prefix('/extract')->as('extract.')->group(function () {
         Route::get('/', 'getExtract')->name('getExtract');
+        Route::get('/chartWallet', 'getExtractChart')->name('getExtractChart');
         Route::get('/{id}', 'index')->name('index');
     });
 

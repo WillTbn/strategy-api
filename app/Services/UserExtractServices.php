@@ -39,22 +39,34 @@ class UserExtractServices
             ], 500);
         }
     }
-    public function get(int $user)
+    public function get(int $user):Collection
     {
-        try{
-            $response = UserExtract::where('user_id', $user)->get();
-            return response()->json([
-                'message' => 'Dados do extrato!',
-                'extract' => $response,
-                'status'=> 200
-            ], 200);
-        }catch(Exception $e){
-            Log::error('exception ->'.$e);
-            return response()->json([
-                'message' => 'Erro ao pegar extrato!',
-                'exception' => $e,
-                'status'=> 500
-            ], 500);
-        }
+
+        $response = UserExtract::where('user_id', $user)->get();
+        return $response;
+    }
+    public function getProfitabily(int $user):Collection
+    {
+
+        return  UserExtract::where('user_id', $user)->where('transaction_name', 'rentabilidade')->get();
+        // return UserWallet::where('current_investment', '>', 0.0)->get()->pluck('current_investment', 'user_id');
+    }
+
+    public function getExtractByChart(int $user)
+    {
+        $extract = $this->getProfitabily($user);
+        $values = $extract->pluck('transaction_value');
+        $days = $extract->pluck('transaction_date');
+        $value_investment_old = $extract->pluck('transaction_data')->pluck('data.value_investment_old');
+        $percentage = $extract->pluck('transaction_data')->pluck('data.percentage');
+        // $jsonData = $json->pluck('data.value_investment_old');
+        $mount = collect([
+            'xCategory' => $values,
+            'days' => $days,
+            'value_old' =>  $value_investment_old,
+            'percentage' =>  $percentage
+        ]);
+
+        return $mount;
     }
 }

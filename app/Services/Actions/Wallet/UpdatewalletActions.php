@@ -11,6 +11,7 @@ use App\Services\UserExtractServices;
 use App\Services\UserInvestmentServices;
 use App\Services\UserWalletServices;
 use Illuminate\Support\Facades\Log;
+use SebastianBergmann\CodeCoverage\Util\Percentage;
 
 class UpdatewalletActions
 {
@@ -47,7 +48,8 @@ class UpdatewalletActions
     public function setTransictionWallet(
         Investment $investment,
         TransictionStatus $transictionStatus,
-        float $current_investment
+        float $current_investment,
+        float $percentage
     ):TransictionWallet
     {
         $transction = new TransictionWallet();
@@ -55,6 +57,7 @@ class UpdatewalletActions
         $transction->setTransName($transictionStatus);
         $transction->setTransDescription($transictionStatus);
         $transction->setOldValueInvestment($current_investment);
+        $transction->setPercentage($percentage);
         $transction->setTransiction();
         return $transction;
         // $transction->setTransiction();
@@ -76,7 +79,8 @@ class UpdatewalletActions
             $trans = $this->setTransictionWallet(
                 $investmentUser[0]->investment,
                 TransictionStatus::PRDAA,
-                $userWallet->current_investment
+                $userWallet->current_investment,
+                $performanceInvesment
             );
 
             $userWallet->current_investment = $newCurrentInvestment;
