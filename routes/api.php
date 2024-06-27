@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\Client\UserExtractController;
 use App\Http\Controllers\InvestmentController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserBankAccountController;
@@ -71,6 +72,11 @@ Route::middleware('auth:sanctum')->group(function(){
 
     Route::controller(InvestmentController::class)->prefix('/investment')->as('investment.')->group(function(){
         Route::get('/', 'store')->name('store');
+    });
+    Route::controller(PaymentController::class)->prefix('/payment')->as('payment.')->group(function() {
+        Route::get('/', 'verify')->name('verifyInitial');
+        Route::post('/pix', 'initialPix')->name('pix');
+        Route::delete('/{id}', 'delete')->name('delete');
     });
 
 });
