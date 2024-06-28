@@ -76,6 +76,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::controller(PaymentController::class)->prefix('/payment')->as('payment.')->group(function() {
         Route::get('/', 'verify')->name('verifyInitial');
         Route::post('/pix', 'initialPix')->name('pix');
+        Route::post('/receipt', 'sendReceipt')->name('receipt');
         Route::delete('/{id}', 'delete')->name('delete');
     });
 

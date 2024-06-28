@@ -25,7 +25,7 @@ class DepositReceiptFactory extends Factory
         return [
            'value' =>fake()->randomFloat(1, 1000, 30),
            'status' => StatusDeposit::Confirmed,
-           'transaction_id' => '#0011',
+           'transaction_code' => '#0011',
            'investment' =>fake()->boolean()
         ];
     }

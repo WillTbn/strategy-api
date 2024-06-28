@@ -33,7 +33,7 @@ class PaymentServices
             $newWallet->investment = $investment;
             $newWallet->value = $amount;
             $newWallet->status = StatusDeposit::Wainting;
-            $newWallet->transaction_id = $code_id;
+            $newWallet->transaction_code = $code_id;
             $newWallet->qrcode = $payloadQrcode;
             $newWallet->saveOrFail();
             DB::commit();

@@ -37,6 +37,17 @@ class PaymentController extends Controller
         ],200);
 
     }
+    public function sendReceipt(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:59240',
+        ]);
+
+        return response()->json([
+            'message' => ' Verificando recebimento de formulario',
+            'status' => 202
+        ], 202);
+    }
     public function delete(int $id)
     {
         if(!$this->paymentServices->getDepositByWalletUser($this->loggedUser->id, $id))

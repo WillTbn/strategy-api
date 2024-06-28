@@ -16,7 +16,7 @@ trait CollectHelper
     public function getTransDeposit( DepositReceipt $depositReceipt, string $trans_name = 'pix'):Collection
     {
         $this->trans_data = collect([...$depositReceipt->only([
-            'transaction_id',
+            'transaction_code',
             'investment'
         ])]);
         $this->trans_data['trans_name'] = $trans_name;
