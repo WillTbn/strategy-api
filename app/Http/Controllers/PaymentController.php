@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\DepositReceiptServices;
 use App\Services\PaymentServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,12 +10,15 @@ use Illuminate\Support\Facades\Auth;
 class PaymentController extends Controller
 {
     private PaymentServices $paymentServices;
+    private DepositReceiptServices $depositServices;
     private $loggedUser;
     public function __construct(
-        PaymentServices $paymentServices
+        PaymentServices $paymentServices,
+        DepositReceiptServices $depositServices
     )
     {
         $this->paymentServices = $paymentServices;
+        $this->depositServices = $depositServices;
         $this->loggedUser = Auth::user('api');
     }
     public function initialPix(Request $request)
@@ -40,13 +44,27 @@ class PaymentController extends Controller
     public function sendReceipt(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:59240',
+            'transaction_id' => 'nullable|string|required_if:file,null',
+            'id' => 'required|exists:deposit_receipts,id',
+            'file' => 'required_if:transaction_id,null|file|mimes:pdf,jpg,jpeg,png|max:59240',
         ]);
-
+        $payment = $this->depositServices->updateReceiptImage(
+            $request->transaction_id,$request->id,$this->loggedUser->id, $request->file
+        );
         return response()->json([
-            'message' => ' Verificando recebimento de formulario',
-            'status' => 202
-        ], 202);
+            'message' => 'Deposito atualizado com sucesso!',
+            'payment' => $payment,
+            'status' => 200
+        ], 200);
+    }
+    public function getStatusWainting()
+    {
+        $waintings = $this->depositServices->getDepositByWarnig();
+        return response()->json([
+            'message' => 'Lista de depositos para avaliação!',
+            'deposits' => $waintings,
+            'status' => 200
+        ], 200);
     }
     public function delete(int $id)
     {
