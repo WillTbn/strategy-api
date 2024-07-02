@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\Adm\DepositReceiptController;
 use App\Http\Controllers\Auth\AccessTokenController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\AuthController;
@@ -79,6 +80,9 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::post('/receipt', 'sendReceipt')->name('receipt');
         Route::get('/wainting', 'getStatusWainting')->name('getWainting');
         Route::delete('/{id}', 'delete')->name('delete');
+    });
+    Route::controller(DepositReceiptController::class)->prefix('/deposit')->as('deposit')->group(function(){
+        Route::post('/', 'updateConfirm')->name('updateConfirm');
     });
 
 });

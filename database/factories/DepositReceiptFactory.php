@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enum\StatusDeposit;
+use App\Enum\TransictionStatus;
 use App\Models\DepositReceipt;
 use App\Models\UserWallet;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -25,7 +26,7 @@ class DepositReceiptFactory extends Factory
         return [
            'value' =>fake()->randomFloat(1, 1000, 30),
            'status' => StatusDeposit::Confirmed,
-           'transaction_code' => '#0011',
+           'transaction_code' => TransictionStatus::DIADNR,
            'investment' =>fake()->boolean()
         ];
     }

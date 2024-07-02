@@ -34,6 +34,7 @@ class DepositReceiptObserver
         $this->transictionData->setTransName($trans);
         $this->transictionData->setTransDescription($trans);
         $this->transictionData->setTransiction();
+        $this->userWalletService->updateValueInvestiment($depositReceipt->userWallet->user_id, $depositReceipt->value, $this->transictionData->getTransData());
     }
 
     /**
@@ -46,10 +47,8 @@ class DepositReceiptObserver
             Log::info('foi criado Deposit com status confimed -> '.json_encode($depositReceipt->userWallet->user_id));
             if($depositReceipt->investment){
                 $this->getTransDeposit($depositReceipt, TransictionStatus::BYADI);
-                $this->userWalletService->updateValueInvestiment($depositReceipt->userWallet->user_id, $depositReceipt->value, $this->transictionData->getTransData());
             }else{
                 $this->getTransDeposit($depositReceipt, TransictionStatus::BYADW);
-                $this->userWalletService->updateValueBalance($depositReceipt->userWallet->user_id, $depositReceipt->value, $this->transictionData->getTransData());
             }
             // $this->userExtractServices->createExtract(
             //     $depositReceipt->userWallet->user_id, 'deposit', $depositReceipt->value, Carbon::now()
@@ -63,17 +62,24 @@ class DepositReceiptObserver
     public function updated(DepositReceipt $depositReceipt): void
     {
         if($depositReceipt->isDirty('status') && $depositReceipt->status == StatusDeposit::Confirmed){
-            Log::info('foi atualizado Deposit com status para confirmed');
-            if($depositReceipt->investment){
+            Log::info('foi atualizado Deposit com status para confirmed status ->'.json_encode($depositReceipt->transaction_id));
+            if($depositReceipt->transaction_id == TransictionStatus::BYADI){
+                Log::info('estou na '.TransictionStatus::BYADI->name);
                 $this->getTransDeposit($depositReceipt, TransictionStatus::BYADI);
-                $this->userWalletService->updateValueInvestiment($depositReceipt->userWallet->user_id, $depositReceipt->value, $this->transictionData->getTransData());
-            }else{
-                $this->getTransDeposit($depositReceipt, TransictionStatus::BYADW);
-                $this->userWalletService->updateValueBalance($depositReceipt->userWallet->user_id, $depositReceipt->value, $this->transictionData->getTransData());
             }
-            // $this->userExtractServices->createExtract(
-            //     $depositReceipt->userWallet->user_id, 'deposit', $depositReceipt->value, Carbon::now()
-            // );
+            if($depositReceipt->transaction_id == TransictionStatus::BYADW){
+                Log::info('estou na '. TransictionStatus::BYADW->name);
+                $this->getTransDeposit($depositReceipt, TransictionStatus::BYADW);
+            }
+            if($depositReceipt->transaction_id == TransictionStatus::DIADNR){
+                Log::info('estou na '.TransictionStatus::DIADNR->name);
+                $this->getTransDeposit($depositReceipt, TransictionStatus::DIADNR);
+
+            }
+            if($depositReceipt->transaction_id == TransictionStatus::DIADWR){
+                Log::info('estou na '.TransictionStatus::DIADWR->name);
+                $this->getTransDeposit($depositReceipt, TransictionStatus::DIADWR);
+            }
         }
     }
 

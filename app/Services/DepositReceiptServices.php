@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DataTransferObject\Deposit\DepositDTO;
 use App\Enum\StatusDeposit;
 use App\Helpers\FileHelper;
 use App\Models\DepositReceipt;
@@ -24,12 +25,6 @@ class DepositReceiptServices
     }
     public function getDepositByWarnig():SuportCollection
     {
-        // INNER JOIN user_wallets ON deposit_receipts.user_wallet_id = user_wallets.id
-        // INNER JOIN users ON user_wallets.user_id = users.id
-        // INNER JOIN accounts ON users.id = accounts.user_id
-        // CASE WHEN deposit_receipts.image IS NULL AND deposit_receipts.transaction_id IS NULL
-        // THEN "Não enviado"
-        // ELSE deposit_receipts.status
         $deposits = DB::table('deposit_receipts')
         ->join('user_wallets', 'user_wallets.id', '=', 'deposit_receipts.user_wallet_id')
         ->join('users', 'users.id', '=', 'user_wallets.user_id')
@@ -44,6 +39,7 @@ class DepositReceiptServices
             'deposit_receipts.transaction_id',
             'users.email',
             'user_wallets.current_balance AS current',
+            'user_wallets.user_id',
             DB::raw('CONCAT(SUBSTRING(accounts.person, 1,3),".***.***-",SUBSTRING(accounts.person, -2)) as person'),
             DB::raw(
                 'CASE
@@ -72,6 +68,29 @@ class DepositReceiptServices
             DB::commit();
             return $deposit;
         }catch(Exception $e){
+            DB::rollBack();
+            Log::error('exception -> '. $e);
+            return response()->json([
+                'message' => 'Erro na atualização do deposito',
+                'exception' =>  $e,
+                'status' => 500
+            ], 500);
+        }
+    }
+    public function setDepositChange( DepositDTO $depositDTO)
+    {
+        try{
+            DB::beginTransaction();
+            $deposit = DepositReceipt::where('transaction_code', $depositDTO->transaction_code)->first();
+            $deposit->transaction_id = $depositDTO->getTransactionId();
+            $deposit->status = $depositDTO->getStatus();
+            $deposit->image = $depositDTO->getImage();
+            $deposit->updateORFail();
+            // dd($deposit);
+            DB::commit();
+            return $deposit;
+        }catch(Exception $e) {
+            DB::rollBack();
             Log::error('exception -> '. $e);
             return response()->json([
                 'message' => 'Erro na atualização do deposito',
