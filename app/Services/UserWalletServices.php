@@ -99,4 +99,9 @@ class UserWalletServices
     {
         return UserWallet::where('current_investment', '>', 0.0)->get()->pluck('current_investment', 'user_id');
     }
+    // public function getWallet($user_id):Collection
+    // {
+    //     $wallet =
+    //     return $wallet;
+    // }
 }

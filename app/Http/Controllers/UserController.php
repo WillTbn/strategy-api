@@ -67,4 +67,14 @@ class UserController extends Controller
         // dd($request->all());
         return $this->userServices->roleUpdate($request['user_id'], $request['role_id']);
     }
+    // ESTA FALTANDO DOCUMENTA NO POSTMAN
+    public function getWallet()
+    {
+        $wallet = $this->loggedUser->userWallet;
+
+        return response()->json([
+            'wallet' => $wallet,
+            'status'=> 200
+        ], 200);
+    }
 }

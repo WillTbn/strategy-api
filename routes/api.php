@@ -39,6 +39,7 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::get('/', 'store')->name('all');
         Route::post('/create', 'create')->name('create');
         Route::put('/role', 'updateRole')->name('updateRole');
+        Route::get('/wallet', 'getWallet')->name('getWallet');
 
     });
     Route::controller(RoleController::class)->prefix('/roles')->as('roles.')->group(function(){
