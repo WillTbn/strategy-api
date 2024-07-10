@@ -159,9 +159,10 @@ class UserServices
             $verified->saveOrFail();
 
             DB::commit();
-            event( new SendCodeNotification($verified->code));
+            $user->notify(new SendCodeNotification($verified->code));
+            // event( );
             return response()->json([
-                'message'=> 'Seja bem, vindo pode agora você pode acessar nossa plataforma.',
+                'message'=> 'Conta criada com sucesso!',
                 'email' => $user->email,
                 'user' => $user,
                 'status'=> 200
