@@ -18,9 +18,9 @@ class PaymentServices
     {
         $pix = new PixGenerate();
         $code_id = substr(uniqid(rand()), 0, 5);
-        $pix->setPixKey('15245342774');
+        $pix->setPixKey(env('PIX_KEY'));
         $pix->setDescription($investment);
-        $pix->setMerchantName(env('PIX_MERCHANTNAME', 'Jorge Luiz'));
+        $pix->setMerchantName(env('PIX_MERCHANTNAME', "Strategy Analitics"));
         $pix->setAmount($amount);
         $pix->setMerchantCity(env('PIX_MERCHANTCITY'));
         $pix->setTxid($user_id.$code_id);
