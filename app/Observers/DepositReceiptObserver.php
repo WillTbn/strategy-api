@@ -6,6 +6,7 @@ namespace App\Observers;
 use App\Enum\StatusDeposit;
 use App\Enum\TransictionStatus;
 use App\EssentialUtil\TransictionWallet;
+use App\Events\User\Deposit\UpdatedStatusDeposit;
 use App\Models\DepositReceipt;
 use App\Services\UserWalletServices;
 use Illuminate\Support\Facades\Log;
@@ -74,12 +75,16 @@ class DepositReceiptObserver
             if($depositReceipt->transaction_id == TransictionStatus::DIADNR){
                 Log::info('estou na '.TransictionStatus::DIADNR->name);
                 $this->getTransDeposit($depositReceipt, TransictionStatus::DIADNR);
-
             }
             if($depositReceipt->transaction_id == TransictionStatus::DIADWR){
                 Log::info('estou na '.TransictionStatus::DIADWR->name);
                 $this->getTransDeposit($depositReceipt, TransictionStatus::DIADWR);
             }
+            event( new UpdatedStatusDeposit($depositReceipt));
+        }
+        if($depositReceipt->isDirty('status') && $depositReceipt->status == StatusDeposit::Rejected){
+            Log::info('foi atualizado Deposit com status para reject status ->'.json_encode($depositReceipt->transaction_id));
+            event( new UpdatedStatusDeposit($depositReceipt));
         }
     }
 

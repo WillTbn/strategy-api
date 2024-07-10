@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DataTransferObject\Deposit\DepositDTO;
 use App\Enum\StatusDeposit;
+use App\Events\User\Deposit\UpdatedStatusDeposit;
 use App\Helpers\FileHelper;
 use App\Models\DepositReceipt;
 use Exception;
@@ -35,10 +36,12 @@ class DepositReceiptServices
             'deposit_receipts.created_at',
             'deposit_receipts.updated_at',
             'deposit_receipts.transaction_code',
-            'deposit_receipts.image',
+            // DB::raw('CONCAT("'.env("APP_URL").'/storage/users/'.'",accounts.avatar) as avatar'),
+            DB::raw('CONCAT("'.env("APP_URL").'/storage/users/'.'",deposit_receipts.image) as image'),
             'deposit_receipts.transaction_id',
             'users.email',
-            'user_wallets.current_balance AS current',
+            'user_wallets.current_investment AS current',
+            'user_wallets.id AS wallet_id',
             'user_wallets.user_id',
             DB::raw('CONCAT(SUBSTRING(accounts.person, 1,3),".***.***-",SUBSTRING(accounts.person, -2)) as person'),
             DB::raw(
@@ -61,8 +64,9 @@ class DepositReceiptServices
         try{
             DB::beginTransaction();
             $deposit = DepositReceipt::where('id', $deposit_id)->first();
-            $deposit->image = $file ? $this->setDoc($file, $user_id, null, 'receipt') : null;
+            $deposit->image = $file ? $this->setDoc($file, $user_id, 'users', 'receipt') : NULL;
             $deposit->transaction_id = $transaction_id;
+            $deposit->status = StatusDeposit::Wainting;
             // $deposit->status = StatusDeposit::Receipt;
             $deposit->updateOrFail();
             DB::commit();
@@ -85,6 +89,7 @@ class DepositReceiptServices
             $deposit->transaction_id = $depositDTO->getTransactionId();
             $deposit->status = $depositDTO->getStatus();
             $deposit->image = $depositDTO->getImage();
+            $deposit->note = $depositDTO->note;
             $deposit->updateORFail();
             // dd($deposit);
             DB::commit();

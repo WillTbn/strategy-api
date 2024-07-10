@@ -18,14 +18,14 @@ class DepositReceiptController extends Controller
     }
     public function updateConfirm(Request $request)
     {
-        // dd($request);
         $depositDTO = new DepositDTO(...$request->only([
             'user_id',
             'wallet_id',
             'transaction_code',
             'transaction_id',
             'receipt_image',
-            'status'
+            'status',
+            'note'
         ]));
         $response = $this->depositReceiptServices->setDepositChange($depositDTO);
         return response()->json([

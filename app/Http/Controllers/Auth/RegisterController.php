@@ -25,7 +25,7 @@ class RegisterController extends Controller
     }
     public function verifyPersonAPI(Request $request)
     {
-        $request['token'] = env('APIINVERTTEXTO_TOKEN', '7860|DZSwqYZeH0bXwHZBHB0ahAAEpnixBSiZ');
+        $request['token'] = env('APIINVERTTEXTO_TOKEN');
           Log::info('verificando se o env esta reconhecendo -> '.  env('APIINVERTTEXTO_TOKEN'));
         $validator = Validator::make($request->all(), [
             'value' => 'required|unique:accounts,person',

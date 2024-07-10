@@ -23,7 +23,8 @@ class CodeTransactionBelongsToWallet implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $getDeposit = DepositReceipt::where('transaction_code', $value)->first();
-        if(!($getDeposit->user_wallet_id === $this->wallet_id)){
+        // dd($getDeposit);
+        if(!$getDeposit || !($getDeposit->user_wallet_id === $this->wallet_id)){
             $fail('Erro, dados inconsistentes...');
         }
     }

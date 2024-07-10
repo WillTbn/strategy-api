@@ -17,6 +17,7 @@ class DepositReceipt extends Model
         'status',
         'transaction_id',
         'transaction_code',
+        'note',
         'qrcode'
     ];
     protected function casts():array

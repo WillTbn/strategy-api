@@ -12,9 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('deposit_receipts', function (Blueprint $table) {
-            // Altera a coluna 'transaction_id' para ser nullable
-            $table->string('transaction_id')->nullable()->change();
-            $table->string('transaction_code')->required();
+            $table->string('note')->nullable();
         });
     }
 
@@ -24,9 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('deposit_receipts', function (Blueprint $table) {
-            $table->string('transaction_id')->required()->change();
-
-            $table->dropColumn('transaction_code');
+            $table->dropColumn('note');
         });
     }
 };

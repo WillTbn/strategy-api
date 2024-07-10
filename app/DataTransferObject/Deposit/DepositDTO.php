@@ -8,11 +8,13 @@ use App\Enum\StatusDeposit;
 use App\Enum\TransictionStatus;
 use App\Helpers\FileHelper;
 use App\Rules\CodeTransactionBelongsToWallet;
+use App\Rules\VerifyStatusDeposit;
 use App\Rules\WalletBelongsToUser;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class DepositDTO extends AbstractDTO implements InterfaceDTO
 {
@@ -24,6 +26,7 @@ class DepositDTO extends AbstractDTO implements InterfaceDTO
         public readonly ?string  $transaction_code =null,
         public readonly ?UploadedFile  $receipt_image =null,
         public readonly ?string  $status = null,
+        public readonly ?string  $note = null,
         // private InvestmentServices $investmentServices,
     )
     {
@@ -44,16 +47,24 @@ class DepositDTO extends AbstractDTO implements InterfaceDTO
             'transaction_id' => 'string|nullable',
             'receipt_image' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:49240',
             'status'=> ['required', Rule::enum(StatusDeposit::class)],
-            'note' => ['string|nullable']
+            'note' => [
+                new VerifyStatusDeposit($this->status),
+                // 'nullable'
+
+            ]
             // 'person' => 'required|unique:accounts',
         ];
     }
     public function getTransactionId()
     {
+        Log::info('Estou aqui ....'.$this->transaction_id);
         if(!$this->transaction_id && !$this->receipt_image){
             return TransictionStatus::DIADNR;
         }
         if(!$this->transaction_id && $this->receipt_image){
+            return TransictionStatus::DIADWR;
+        }
+        if($this->transaction_id){
             return TransictionStatus::DIADWR;
         }
         if($this->transaction_id){
