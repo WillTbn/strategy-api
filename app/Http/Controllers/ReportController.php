@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\TypeReport;
 use App\Helpers\FileHelper;
 use App\Http\Requests\Report\ReportRequest;
 use App\Http\Requests\Report\ReportputRequest;
@@ -47,6 +48,14 @@ class ReportController extends Controller
             'status'=> 200
         ], 200);
 
+    }
+    public function last()
+    {
+        return response()->json([
+            'crypto'=> Report::where('type', TypeReport::CRYPTO)->clientOrAdmin($this->loggedUser->role_id)->get()->last(),
+            'classic'=> Report::where('type', TypeReport::CLASSIC)->clientOrAdmin($this->loggedUser->role_id)->get()->last(),
+            'status' => 200
+        ],200);
     }
     public function create(ReportRequest $request)
     {

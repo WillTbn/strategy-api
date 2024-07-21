@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::post('/document', 'updateDoc')->name('uploadDocument');
         Route::post('/audio', 'updateAudio')->name('uploadAudio');
         Route::post('/audio/delete', 'deleteAudio')->name('deleteAudio');
+        Route::get('/last', 'last')->name('last');
         Route::delete('/{report}', 'delete')->name('delete');
         Route::get('/{report}', 'index')->name('index');
     });
