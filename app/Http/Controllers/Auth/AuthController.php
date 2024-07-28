@@ -131,8 +131,8 @@ class AuthController extends Controller
         }
         return response()->json([
             'message' => 'Token invalido, verifique.',
-            'status'=> 200
-        ],200);
+            'status'=> 500
+        ],500);
     }
 
 }
