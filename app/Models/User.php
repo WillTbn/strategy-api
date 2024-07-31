@@ -68,7 +68,7 @@ class User extends Authenticatable
     }
     public function sendPasswordResetNotification($token)
     {
-        $url = env('APP_URL_FRONT', 'http://localhost:9010').'/login?tokenRemenber='.$token;
+        $url = env('APP_URL_FRONT', 'http://localhost:9010/').'login?tokenRemenber='.$token;
         $this->notify(new ResetPasswordNotification($url));
     }
     public function account(): HasOne
