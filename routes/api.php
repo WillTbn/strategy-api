@@ -63,6 +63,7 @@ Route::middleware('auth:sanctum')->group(function(){
 
     Route::controller(ClientController::class)->prefix('/clients')->as('clients.')->group(function () {
         Route::get('/', 'store')->name('store');
+        Route::post('/', 'invitation')->name('invitation');
         Route::get('/{id}', 'index')->name('index');
         Route::put('/investment', 'addInvestment')->name('addInvestment');
     });

@@ -56,9 +56,9 @@ class User extends Authenticatable
     }
     public function scopeClientOrAdmin($query, RoleEnum $role)
     {
-        if($role == RoleEnum::Client)
-            return $query->with(['account', 'userWallet', 'userBankAccounts']);
-        return $query->with(['account']);
+        // if($role == RoleEnum::Client)
+        return $query->with(['account', 'userWallet', 'userBankAccounts']);
+        // return $query->with(['account']);
     }
     public function scopeVerifyUser($query, RoleEnum $role)
     {

@@ -24,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('deposit_receipts', function (Blueprint $table) {
-            $table->string('transaction_id')->required()->change();
+            $table->dropColumn('transaction_id');
 
             $table->dropColumn('transaction_code');
         });

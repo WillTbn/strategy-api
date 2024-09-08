@@ -20,6 +20,11 @@ class UserTableSeeder extends Seeder
     {
         User::factory()
             ->has(Account::factory(1,['person' =>env('ADMIN_PERSON', '111.222.333-44')]))
+            ->has(UserBankAccount::factory())
+            // ->has(UserWallet::factory())
+            ->has(
+                UserWallet::factory()->has(DepositReceipt::factory())
+            )
         ->create([
             'name'=>'Administrador User',
             'email'=> env('ADMIN_EMAIL', fake()->email()),

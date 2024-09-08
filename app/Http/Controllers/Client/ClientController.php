@@ -3,19 +3,25 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Client\InviteClientRequest;
 use App\Models\User;
 use App\Services\ClientServices;
+use App\Services\User\CreateUserClientServices;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ClientController extends Controller
 {
     private ClientServices $clientServices;
+    private CreateUserClientServices $createUserClientServices;
     public function __construct(
-        ClientServices $clientServices
+        ClientServices $clientServices,
+        CreateUserClientServices $createUserClientServices
     )
     {
         $this->clientServices = $clientServices;
+        $this->createUserClientServices = $createUserClientServices;
     }
     public function index(int $id)
     {
@@ -59,5 +65,41 @@ class ClientController extends Controller
             ], 402);
         }
         return $response;
+    }
+    /**
+     * @param InviteClientRequest $request
+     * @return JsonResponse
+     */
+    public function invitation(InviteClientRequest $request)
+    {
+        // dd($request['current_balance']);
+        $this->createUserClientServices->setClientData( $request->only([
+            'name',
+            'email',
+            'person',
+            'birthday',
+            'notifications',
+            'telephone',
+            'phone' ,
+            'genre',
+            'address_street',
+            'address_state',
+            'address_number',
+            'address_district',
+            'address_zip_code',
+            'address_city',
+            'address_country',
+            'current_balance',
+            'type_of_investor',
+            'last_month'
+        ]));
+        $this->createUserClientServices->execute();
+        return new JsonResponse(
+            [
+                'message' =>  'Usuário criado, envio de ',
+                'user' => $this->createUserClientServices->getUserData()
+            ],
+            200
+        );
     }
 }
