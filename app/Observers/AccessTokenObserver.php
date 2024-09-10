@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Enum\RoleEnum;
+use App\Events\Client\InviteClientEvent;
 use App\Events\CreateUserAdm;
 use App\Models\AccessToken;
 use Illuminate\Support\Facades\Log;
@@ -16,8 +17,11 @@ class AccessTokenObserver
     {
         Log::info('Event created token'.$accessToken);
         if($accessToken->user->role_id == RoleEnum::Master || $accessToken->user->role_id == RoleEnum::Employee){
-            Log::info('Event created user admin');
+            Log::info('Event created user admin or employee');
             event(new CreateUserAdm($accessToken));
+        }else if($accessToken->user->role_id == RoleEnum::Client){
+            Log::info('Event created user client');
+            event(new InviteClientEvent($accessToken));
         }
     }
 

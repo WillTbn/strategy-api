@@ -25,6 +25,6 @@ class SendEmailPasswordReset
     public function handle(PasswordReset $event): void
     {
         Log::info('Enviando e-mail para usuário informando que ele resetou com sucesso a senha!'.json_encode($event->user));
-        Mail::to(env('NO_REPLAY_EMAIL', 'no-replay@strategyanalytics.com.br'), 'Strategy Analitycs')->send(new PasswordResetMail($event->user));
+        Mail::to($event->user->email, $event->user->name)->send(new PasswordResetMail($event->user));
     }
 }

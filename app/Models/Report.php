@@ -35,14 +35,14 @@ class Report extends Model
             return asset('storage/reports/'.$value);
         return null;
     }
-    public function getDisplayDateAtAttribute($value)
-    {
-        if($value){
-            $format_date =  Carbon::parse($value);
-            return  $format_date->format('d/m/Y');
-        }
-        return $value;
-    }
+    // public function getDisplayDateAtAttribute($value)
+    // {
+    //     if($value){
+    //         $format_date =  Carbon::parse($value);
+    //         return  $format_date->format('d/m/Y');
+    //     }
+    //     return $value;
+    // }
     public function scopeClientOrAdmin($query, RoleEnum $role)
     {
         if($role == RoleEnum::Client)

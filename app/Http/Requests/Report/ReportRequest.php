@@ -22,8 +22,7 @@ class ReportRequest extends FormRequest
             'type'=>['required', Rule::enum(TypeReport::class)],
             'display_date_at' =>'date_format:d-m-Y',
             'audio' =>[
-                'file',
-                'mimes:audio/aac,audio/aiff,audio/amr,audio/flac,audio/m4a,audio/ogg,audio/opus,audio/wav,audio/wma',
+                'mimes:audio/aac,audio/aiff,audio/amr,audio/flac,audio/m4a,audio/ogg,audio/opus,audio/wav,audio/wma,audio/.mp3,mp3',
                 'max:59240', // 59MB em kilobytes
             ],
         ];

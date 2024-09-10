@@ -20,6 +20,7 @@ class ReportputRequest extends FormRequest
             'report_id' => 'exists:reports,id',
             'title' => 'string',
             'description'=>'string',
+            'display_date_at'=>'date',
             'type'=>[Rule::enum(TypeReport::class)],
         ];
     }

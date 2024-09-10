@@ -50,17 +50,18 @@ class AccountServices
             DB::beginTransaction();
             $user = User::where('id',$user_id)->first();
             $user->name = $name;
-            $user->saveOrFail();
+            $user->save();
 
             $account = Account::where('user_id',$user->id)->first();
             $account->phone = $phone;
-            $account->saveOrFail();
+            $account->save();
+            DB::commit();
             return response()->json([
                 'message'=> 'Dados atualizados com sucesso!',
+                'user' => $user,
                 'account' => $account,
                 'status'=> 200
             ], 200);
-            DB::commit();
         }catch(Exception $e){
             Log::error('exception ->'.$e);
             DB::rollBack();
