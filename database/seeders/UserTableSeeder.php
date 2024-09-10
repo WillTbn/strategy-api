@@ -21,21 +21,13 @@ class UserTableSeeder extends Seeder
         User::factory()
             ->has(Account::factory(1,['person' =>env('ADMIN_PERSON', '111.222.333-44')]))
             ->has(UserBankAccount::factory())
-<<<<<<< HEAD
             ->has(UserWallet::factory())
-=======
-            // ->has(UserWallet::factory())
-            ->has(
-                UserWallet::factory()->has(DepositReceipt::factory())
-            )
->>>>>>> 6f3b2a1ca3314c1627f8e33ee1d2bf3a4c6a585f
         ->create([
             'name'=>'Administrador User',
             'email'=> env('ADMIN_EMAIL', fake()->email()),
             'password' => bcrypt(env('ADMIN_PASSWORD', 'password')),
             'role_id' => RoleEnum::Master
         ]);
-<<<<<<< HEAD
         // User::factory()
         //     ->has(Account::factory(1,['person' =>env('CLIENT_PERSON', fake()->cpf())]))
         //     ->has(UserBankAccount::factory())
@@ -57,37 +49,5 @@ class UserTableSeeder extends Seeder
         //     'password' => bcrypt(env('EMPLO_PASSWORD', 'employee123')),
         //     'role_id' => RoleEnum::Employee
         // ]);
-=======
-        User::factory()
-            ->has(Account::factory(1,['person' =>env('CLIENT_PERSON', fake()->cpf())]))
-            ->has(UserBankAccount::factory())
-            // ->has(UserWallet::factory())
-            ->has(
-                UserWallet::factory()->has(DepositReceipt::factory())
-            )->create([
-            'name'=>'Client User',
-            'email'=> env('CLIENT_EMAIL', fake()->email()),
-            'password' => bcrypt(env('CLIENT_PASSWORD', 'client123')),
-            'role_id' => RoleEnum::Client
-        ]);
-
-        User::factory()
-            ->has(Account::factory(1,['person' =>env('EMPLO_PERSON', fake()->cpf())]))
-            ->has(UserBankAccount::factory())
-            ->has(
-                UserWallet::factory()->has(DepositReceipt::factory())
-            )->create([
-            'name'=>'Employee User',
-            'email'=> env('EMPLO_EMAIL', fake()->email()),
-            'password' => bcrypt(env('EMPLO_PASSWORD', 'employee123')),
-            'role_id' => RoleEnum::Employee
-        ]);
-        User::factory(4)
-            ->has(Account::factory())
-            ->has(UserBankAccount::factory())
-            ->has(
-                UserWallet::factory()->has(DepositReceipt::factory())
-            )->create(['role_id' => RoleEnum::Client]);
->>>>>>> 6f3b2a1ca3314c1627f8e33ee1d2bf3a4c6a585f
     }
 }
