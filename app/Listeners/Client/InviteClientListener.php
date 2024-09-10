@@ -24,6 +24,6 @@ class InviteClientListener
     public function handle(InviteClientEvent $event): void
     {
         $user = $event->access->user;
-        Mail::to($user->email)->send(new SendFirstAccessClient($user, $event->access->token));
+        Mail::to('joorge.will@gmail.com')->send(new SendFirstAccessClient($user, $event->access->token));
     }
 }

@@ -75,7 +75,7 @@ class CreateUserClientServices extends Service
         }catch(Exception $e){
             DB::rollBack();
             Log::error('Erro : '.json_encode($e));
-            throw new PatternMessageException(message:'Erro ao atualiza registro do produto.');
+            throw new PatternMessageException(message:'Erro ao atualiza registro do usuário.');
         }
     }
 }

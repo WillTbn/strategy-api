@@ -15,6 +15,7 @@ class UserWallet extends Model
         'user_id',
         'current_balance',
         'current_investment',
+        'last_month',
         'current_loan'
     ];
     public function DepositReceipts():HasMany
