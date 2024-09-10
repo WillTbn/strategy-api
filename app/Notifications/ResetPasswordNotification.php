@@ -10,8 +10,8 @@ use Illuminate\Notifications\Notification;
 class ResetPasswordNotification extends Notification
 {
     use Queueable;
-    private $url;
-    private $name;
+    public $url;
+    public $name;
     /**
      * Create a new message instance.
      */
@@ -37,7 +37,7 @@ class ResetPasswordNotification extends Notification
         $name = $notifiable->name;
         $url = $this->url;
         return (new MailMessage)
-                    ->from(env('MAIL_FROM_ADDRESS', 'no-replay@strategyanalytics.com.br'), 'Equipe Strategy Analytics')
+                    ->from(env('NO_REPLAY_EMAIL', 'no-replay@strategyanalytics.com.br'), 'Equipe Strategy Analytics')
                     ->subject('Redefinir Senha')
                     ->line('Olá, ', $this->name)
                     ->action('Notification Action', $this->url)

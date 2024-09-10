@@ -8,6 +8,7 @@ use App\Http\Requests\UserRequest;
 use App\Services\UserServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -54,5 +55,26 @@ class UserController extends Controller
             ], 402);
         }
         return $response;
+    }
+    public function updateRole(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'role_id' => 'required|exists:roles,id',
+            'user_id' => 'required|exists:users,id'
+        ]);
+        $validator->validate();
+        Log::info('Usuário ->'. $this->loggedUser->name.' que dar nova permissão para '.$request['user_id']);
+        // dd($request->all());
+        return $this->userServices->roleUpdate($request['user_id'], $request['role_id']);
+    }
+    // ESTA FALTANDO DOCUMENTA NO POSTMAN
+    public function getWallet()
+    {
+        $wallet = $this->loggedUser->userWallet;
+
+        return response()->json([
+            'wallet' => $wallet,
+            'status'=> 200
+        ], 200);
     }
 }

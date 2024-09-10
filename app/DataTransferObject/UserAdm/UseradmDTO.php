@@ -27,13 +27,13 @@ class UseradmDTO extends AbstractDTO implements InterfaceDTO
         public readonly ?string  $telephone =null,
         public readonly ?string  $phone =null,
         public readonly ?string  $genre =null,
-        public readonly ?string  $address_street ="",
-        public readonly ?string  $address_state ="",
-        public readonly ?string  $address_number ="",
-        public readonly ?string  $address_district ="",
-        public readonly ?string  $address_zip_code ="",
-        public readonly ?string  $address_city ="",
-        public readonly ?string  $address_country ="",
+        public readonly ?string  $address_street =null,
+        public readonly ?string  $address_state =null,
+        public readonly ?string  $address_number =null,
+        public readonly ?string  $address_district =null,
+        public readonly ?string  $address_zip_code =null,
+        public readonly ?string  $address_city =null,
+        public readonly ?string  $address_country =null,
     )
     {
         $random_passwrod = Str::random(8);
@@ -45,10 +45,6 @@ class UseradmDTO extends AbstractDTO implements InterfaceDTO
     {
         return Carbon::parse($this->birthday);
     }
-    public function getAddreesStreet():string
-    {
-        return "vendo oque acontece";
-    }
     public function rules(): array
     {
         return [
@@ -57,16 +53,16 @@ class UseradmDTO extends AbstractDTO implements InterfaceDTO
             'person' => 'required|unique:accounts',
             'birthday' =>'required|date_format:d-m-Y',
             'notifications'=> ['required', Rule::enum(NotificationEnum::class)],
-            'telephone' => 'string',
+            'telephone' => '',
             'phone' => 'string',
-            'genre' => 'in:M,W,L',
-            'address_street' =>'string',
-            'address_state' =>'string',
-            'address_number' =>'string',
-            'address_district' =>'string',
-            'address_zip_code' =>'string',
-            'address_city' =>'string',
-            'address_country' =>'string',
+            'genre' => 'in:M,W,L,O',
+            'address_street' =>'',
+            'address_state' =>'',
+            'address_number' =>'',
+            'address_district' =>'',
+            'address_zip_code' =>'',
+            'address_city' =>'',
+            'address_country' =>'',
             'role_id' =>[
                 'required',
                 Rule::enum(RoleEnum::class)

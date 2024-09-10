@@ -24,6 +24,20 @@ trait FileHelper
         $file->storeAs($folder, $nameLast,'public');
         return $nameLast;
     }
+    /**
+     * @param File $file arquivo file a ser salvo
+     * @param int $id identificado do usuário que pertence o documento
+     * @param string|null folder nome da pasta pai
+     * @param string|null subfolder
+     */
+    public function setDoc(File $file, int $id, ?string $folder='users', ?string $subfolder = 'doc'): string
+    {
+        $filename = date('Y_m_d_H_m_s');
+        $extension = $file->getClientOriginalExtension();
+        $nameLast = $id.'/'.$subfolder.'/'.$filename.'.'.$extension;
+        $file->storeAs($folder, $nameLast,'public');
+        return $nameLast;
+    }
     public function getNameFile(string $url):string
     {
         // $parseUrl = parse_url($url);

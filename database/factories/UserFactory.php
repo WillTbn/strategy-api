@@ -58,6 +58,7 @@ class UserFactory extends Factory
     {
         return $this->afterMaking(function (User $user) {
             if(!$user->role_id){
+
                 $roleMaster = Role::factory()
                     ->has(Ability::factory(1, ['name' => 'all-access']))
                 ->create(['name'=> RoleEnum::Master->name]);

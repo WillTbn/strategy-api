@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\DepositReceipt;
+use App\Models\UserWallet;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,8 +19,8 @@ class UserWalletFactory extends Factory
     public function definition(): array
     {
         return [
-            'current_balance' => fake()->randomFloat(1, 1000, 30),
-            'current_investment' => fake()->randomFloat(1, 20, 30),
+            'current_balance' => 0.0,
+            'current_investment' => 0.0,
             'current_loan' => 0.0
         ];
     }

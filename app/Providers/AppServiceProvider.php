@@ -3,11 +3,15 @@
 namespace App\Providers;
 
 use App\Models\AccessToken;
+use App\Models\DepositReceipt;
 use App\Models\Report;
 use App\Models\User;
 use App\Observers\AccessTokenObserver;
+use App\Observers\DepositReceiptObserver;
 use App\Observers\ReportObserver;
 use App\Observers\UserObserver;
+use App\Models\Repository\Eloquent\UserRepositoryEloquent;
+use App\Models\Repository\UserRepository;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\ServiceProvider;
 
@@ -26,9 +30,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->app->bind(UserRepository::class, UserRepositoryEloquent::class);
         Report::observe(ReportObserver::class);
         User::observe(UserObserver::class);
         AccessToken::observe(AccessTokenObserver::class);
+        DepositReceipt::observe(DepositReceiptObserver::class);
 
         Http::macro('textapi', function(){
             return Http::acceptJson()->baseUrl(config('textapi.url'));

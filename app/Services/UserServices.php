@@ -36,6 +36,26 @@ class UserServices
     {
         return User::verifyUser($role_id)->with(['accessToken'])->get();
     }
+    public function roleUpdate(int $user_id, int $role_id)
+    {
+        try{
+            $user = User::where('id', $user_id)->first();
+            $user->role_id = $role_id;
+            $user->updateOrFail();
+            return response()->json([
+                'message' => 'Dado nova permissão para o usuário '.$user->name,
+                'user' => $user,
+                'status' => 200
+            ], 200);
+        }catch( Exception $e){
+            Log::error('exception ->'.$e);
+            return response()->json([
+                'message' => 'Erro na atualização dos dados do Usuário!',
+                'exception' => $e,
+                'status'=> 500
+            ], 500);
+        }
+    }
     public function createAdmin(UseradmDTO $data)
     {
         try{
@@ -68,6 +88,10 @@ class UserServices
             $account->address_country = $data->address_country;
             $account->user_id = $user->id;
             $account->saveOrFail();
+            // 3. Preenche os dados da tabela user_wallets;
+            $wallet = new UserWallet();
+            $wallet->user_id = $user->id;
+            $wallet->saveOrFail();
             AccessToken::create([
                 'token' => $hashedToken,
                 'user_id' => $user->id,
@@ -133,11 +157,12 @@ class UserServices
             $verified->expires_at = $dtaNow->addDays(2);
             $verified->user_id = $user->id;
             $verified->saveOrFail();
-            $user->notify( new SendCodeNotification($verified->code));
 
             DB::commit();
+            $user->notify(new SendCodeNotification($verified->code));
+            // event( );
             return response()->json([
-                'message'=> 'Seja bem, vindo pode agora você pode acessar nossa plataforma.',
+                'message'=> 'Conta criada com sucesso!',
                 'email' => $user->email,
                 'user' => $user,
                 'status'=> 200

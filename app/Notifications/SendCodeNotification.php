@@ -37,7 +37,7 @@ class SendCodeNotification extends Notification
         $name = $notifiable->name;
         $code = $this->code;
         return (new MailMessage)
-                    ->from(env('MAIL_FROM_ADDRESS', 'no-replay@strategyanalytics.com.br'), 'Equipe Strategy Analytics')
+                    ->from(env('NO_REPLAY_EMAIL', 'no-replay@strategyanalytics.com.br'), 'Equipe Strategy Analytics')
                     ->subject('Código de verificação de email')
                     ->line('Olá, ', $name)
                     ->view('mail.users.verifiedemail', compact('name', 'code'));

@@ -60,9 +60,9 @@ class ReportServices
                 'user_id' =>  $user_id,
                 'title' => $title,
                 'description' => $description,
-                'display_date_at' => $format_data ?? $format_data->format('Y-m-d'),
+                'display_date_at' => $format_data->format('Y-m-d'),
                 'document' => $this->setDocOrAudio($document,$type,'document', 'reports' ),
-                'audio' => $audio != null ?? $this->setDocOrAudio($audio,$type,'audio', 'reports' ),
+                'audio' => $audio != null ? $this->setDocOrAudio($audio,$type,'audio', 'reports' ): null,
                 'type' => $type
             ]);
             return $report;
@@ -81,14 +81,19 @@ class ReportServices
         int $user_id,
         String $title,
         String $description,
-        String $type
+        String $type,
+        String $display_date_at = null,
+
     ){
+        $format_data = Carbon::parse($display_date_at);
+
         try{
             $report = Report::where('id', $report_id)->first();
             $report->user_id = $user_id;
             $report->title = $title;
             $report->type = $type;
             $report->description = $description;
+            $report->display_date_at = $format_data->format('Y-m-d');
             $report->save();
             return $report;
         }catch( Exception $e){
