@@ -53,7 +53,7 @@ Route::middleware('auth:sanctum')->group(function(){
     });
     Route::controller(UserBankAccountController::class)->prefix('/bank')->as('bank.')->group(function (){
         Route::post('/', 'create')->name('create');
-        Route::put('/', 'update')->name('update');
+        Route::put('/{bank}', 'update')->name('update');
         Route::delete('/{bank}', 'delete')->name('delete');
     });
 

@@ -29,7 +29,7 @@ class PasswordResetMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Senha atualizada com secesso.',
+            subject: 'Senha atualizada com sucesso.',
         );
     }
 

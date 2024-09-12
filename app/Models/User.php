@@ -89,7 +89,7 @@ class User extends Authenticatable
     }
     public function userBankAccounts():HasMany
     {
-        return $this->hasMany(UserBankAccount::class);
+        return $this->hasMany(UserBankAccount::class)->orderByMainAccount();
     }
     public function accessToken():HasOne
     {
