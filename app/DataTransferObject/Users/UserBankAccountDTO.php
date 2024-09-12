@@ -75,7 +75,7 @@ class UserBankAccountDTO
     {
         $this->number = $number;
     }
-    public function getMainAccount():bool
+    public function getMainAccount():?bool
     {
         return $this->main_account;
     }

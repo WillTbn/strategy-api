@@ -38,8 +38,8 @@ class UpdateUserBankAccountServices extends Service
         $this->userBanckAccountDto->setUserId($this->getUserBank()->user_id);
         $this->userBanckAccountDto->setAgency($bank['agency']);
         $this->userBanckAccountDto->setNumber($bank['number']);
-        $this->userBanckAccountDto->setNickname($bank['nickname']);
-        $this->userBanckAccountDto->setMainAccount($bank['main_account']);
+        $this->userBanckAccountDto->setNickname($bank['nickname'] ?? null );
+        $this->userBanckAccountDto->setMainAccount($bank['main_account'] ?? null);
     }
     public function getBankData():UserBankAccountDTO
     {

@@ -25,7 +25,7 @@ class BankAccountRequest extends FormRequest
             'bank' => 'required',
             'agency' => 'required',
             'number' => 'required',
-            'nickname' => 'string',
+            'nickname' => 'string|nullable',
             'main_account' => 'boolean'
         ];
     }
