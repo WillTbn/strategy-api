@@ -57,7 +57,7 @@ class User extends Authenticatable
     public function scopeClientOrAdmin($query, RoleEnum $role)
     {
         // if($role == RoleEnum::Client)
-        return $query->with(['account', 'userWallet', 'userBankAccounts']);
+        return $query->with(['account', 'userWallet', 'userBankAccounts', 'userIncomes']);
         // return $query->with(['account']);
     }
     public function scopeVerifyUser($query, RoleEnum $role)
@@ -102,6 +102,10 @@ class User extends Authenticatable
     public function userInvestments():HasMany
     {
         return $this->hasMany(UserInvestment::class);
+    }
+    public function UserIncomes():HasMany
+    {
+        return $this->hasMany(UserIncome::class);
     }
     public function isClient():bool
     {
