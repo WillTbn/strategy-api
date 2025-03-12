@@ -19,7 +19,10 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:9010', 'https://test.strategyanalytics.com.br', 'https://strategyanalytics.com.br','strategyanalytics.com.br'],
+    'allowed_origins' => [
+        'http://localhost:9010', 'https://test.strategyanalytics.com.br',
+        'https://strategyanalytics.com.br', 'strategyanalytics.com.br', 'https://www.strategyanalytics.com.br'
+    ],
 
     'allowed_origins_patterns' => [],
 
