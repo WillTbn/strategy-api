@@ -13,6 +13,8 @@ class UserIncome extends Model
         'origin_name',
         'value',
         'date_at',
-        'data_info'
+        'data_info',
+        'updated_at',
+        'created_at',
     ];
 }
