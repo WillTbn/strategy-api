@@ -19,7 +19,7 @@ class UserSetTableSeeder extends Seeder
     {
         User::factory()
             ->has(Account::factory(1,[
-                    'person' =>'594.624.269-53',
+                    'person' =>'309.515.338-43',
                     'telephone' => '',
                     'phone' => '47 99740-6155',
                     'birthday' => '2000-01-01',
@@ -27,21 +27,21 @@ class UserSetTableSeeder extends Seeder
                     'address_country' => 'Brasil',
 
                     'address_district' => 'Santa Catarina',
-                    'address_state' => 'SC',
+                    'address_state' => 'SP',
 
 
                 ]))
             ->has(UserWallet::factory())
             ->has(UserBankAccount::factory(1,[
-                'bank' => 'Banco do Brasil',
-                'agency' => '3163-1',
-                'number' => '8372-0',
+                'bank' => 'Santander',
+                'agency' => '3618',
+                'number' => '001003674-5',
                 'main_account' => 1
             ]))
         ->create([
-            'name'=>'Ingelore Rutsatz',
-            'email' => 'ingelore.rutdatz@yahoo.com.br',
-            'password' => 'f089t9',
+            'name'=>'Carlos Alessandro Bustamante Ribeiro',
+            'email' => 'carlos.bustamante@hotmail.com.br',
+            'password' => '1T26tu',
             'role_id' => RoleEnum::Client
         ]);
     }
