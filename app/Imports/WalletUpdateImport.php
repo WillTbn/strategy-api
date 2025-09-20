@@ -49,7 +49,9 @@ class WalletUpdateImport implements ToCollection, WithHeadingRow, WithChunkReadi
                 $account->userWallet()->update([
                     'current_investment' => $row['carteira'],
                     'updated_at' => now(),
+                    'current_loan' => $row['dolar']
                 ]);
+
                 foreach($this->investments as $investment) {
                     if($row[$investment['value']]){
                         Log::info('row: ' . $row);
